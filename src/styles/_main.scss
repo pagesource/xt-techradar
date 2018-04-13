@@ -1,32 +1,31 @@
-.xtr{
-    &-main{
+.xtr {
+    &-main {
         flex: 1;
         padding: 8px;
         display: flex;
         flex-direction: row;
-
-        &-radar{
+        &-radar {
             display: none;
-            @media screen and (min-width:792px){         
-                display: block;
+            @media screen and (min-width: 792px) {
+                display: flex;
                 flex: 1;
                 flex-shrink: 0;
                 padding-right: 16px;
+                justify-content: center;
+                align-items: center;
+                overflow: auto;
             }
         }
-
-        &-quadrant-data{
+        &-quadrant-data {
             position: relative;
-            min-width:100%;
-            
-            @media screen and (min-width:792px){
+            min-width: 100%;
+            @media screen and (min-width: 792px) {
                 min-width: 200px;
             }
-
-            .mdl-grid.mdl-grid--no-spacing > .mdl-cell.mdl-card{
-                min-height:0;
+            .mdl-grid.mdl-grid--no-spacing>.mdl-cell.mdl-card {
+                min-height: 0;
                 margin-top: 16px;
-                &:first-child{
+                &:first-child {
                     margin-top: 0;
                 }
             }
@@ -34,6 +33,6 @@
     }
 }
 
-.mdl-layout__header > .mdl-layout-icon{
+.mdl-layout__header>.mdl-layout-icon {
     overflow: visible;
 }
