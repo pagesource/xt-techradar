@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>XT-TechRadar UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header mdl-color--grey-100">
+        <header class="xtr-header mdl-layout__header mdl-layout--small-screen-only">
+            <div class="mdl-layout-icon"></div>
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout__title">XT Tech Radar</span>
+                <div class="mdl-layout-spacer"></div>
+            </div>
+        </header>
+        <aside class="mdl-layout__drawer mdl-color--white">
+            <!-- Drawer data -->
+            <div class="xtr-sidebar">
+                <div class="xtr-sidebar__title mdl-card__title mdl-card--expand">
+                    <h2 class="mdl-card__title-text mdl-color-text--white">XT Tech Radar</h2>
+                </div>
+                <div style="width:100%" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                <form action="">
+                    <ul class="mdl-list">
+                        <li class="mdl-list__item">
+                            <span class="mdl-typography--menu mdl-color-text--grey-600">Select Quadrant</span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                All
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="all">
+                                    <input type="radio" id="all" class="mdl-radio__button" name="quadrant" value="all" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                Ubiqitous
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="ubiqitous">
+                                    <input type="radio" id="ubiqitous" class="mdl-radio__button" name="quadrant" value="ubiqitous" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                Scale/Grow
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Scale/Grow">
+                                    <input type="radio" id="Scale/Grow" class="mdl-radio__button" name="quadrant" value="Scale/Grow" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                Incubate
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Incubate">
+                                    <input type="radio" id="Incubate" class="mdl-radio__button" name="quadrant" value="Incubate" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                            <span class="mdl-list__item-primary-content">
+                                De-Emphasize
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="De-Emphasize">
+                                    <input type="radio" id="De-Emphasize" class="mdl-radio__button" name="quadrant" value="De-Emphasize" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-typography--menu mdl-color-text--grey-600">Select Tags</span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                Web
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="web">
+                                    <input type="checkbox" id="web" class="mdl-switch__input" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                Mobile
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="Mobile">
+                                    <input type="checkbox" id="Mobile" class="mdl-switch__input" checked />
+                                </label>
+                            </span>
+                        </li>
+                        <li class="mdl-list__item">
+                            <span class="mdl-list__item-primary-content">
+                                AR/VR
+                            </span>
+                            <span class="mdl-list__item-secondary-action">
+                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="AR/VR">
+                                    <input type="checkbox" id="AR/VR" class="mdl-switch__input" checked />
+                                </label>
+                            </span>
+                        </li>
+
+                    </ul>
+                </form>
+            </div>
+        </aside>
+        <div class="mdl-layout__content">
+            <div class="mdl-layout__container">
+                <div class="mdl-layout">
+                    <div style="width:100%" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                    <main class="xtr-main">
+                        <div class="xtr-main-radar">
+                            Nostrud nostrud culpa aliqua enim dolor nostrud aute. Cupidatat pariatur pariatur tempor dolor dolore cupidatat. Irure officia
+                            voluptate dolore quis magna veniam id exercitation. Id enim labore veniam dolore sunt sint velit
+                            cillum. Exercitation excepteur occaecat ipsum ad consequat labore ullamco irure Lorem ea.
+
+                            <button id="show-dialog" type="button" class="mdl-button">Show Dialog</button>
+                            <dialog class="mdl-dialog">
+                                <h4 class="mdl-dialog__title">Allow data collection?</h4>
+                                <div class="mdl-dialog__content">
+                                    <p>
+                                        Allowing us to collect data will let us get you the information you want faster.
+                                    </p>
+                                </div>
+                                <div class="mdl-dialog__actions">
+                                    <button type="button" class="mdl-button">Agree</button>
+                                    <button type="button" class="mdl-button close">Disagree</button>
+                                </div>
+                            </dialog>
+                        </div>
+                        <div class="xtr-main-quadrant-data">
+                            <div class="mdl-layout__container">
+                                <div class="mdl-layout">
+                                    <div class="mdl-layout__content">
+                                        <div class="mdl-grid mdl-grid--no-spacing">
+                                            <div class="mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                                                <table class="mdl-data-table mdl-color--white mdl-shadow--2dp">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--light-blue-700">Ubiquitous</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+                                                        </tr>
+                                             
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                                                <table class="mdl-data-table mdl-color--white mdl-shadow--2dp">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--teal-700">Material</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                                                <table class="mdl-data-table mdl-color--white mdl-shadow--2dp">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--pink-700">Material</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                                                    <table class="mdl-data-table mdl-color--white mdl-shadow--2dp">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="mdl-data-table__cell--non-numeric mdl-color-text--black mdl-color--amber-700">Material</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

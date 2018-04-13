@@ -1,0 +1,11 @@
+.xtr {
+    &-sidebar {
+        width: 100%;
+        .mdl-card__title {
+            background-image: linear-gradient(293deg, #1d232a, #282f37);
+        }
+        &__title {
+            height: 151px;
+        }
+    }
+}
