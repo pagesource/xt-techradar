@@ -91,8 +91,11 @@ const plotRadar = function (title, blips) {
         radar.addQuadrant(quadrant);
     });
 
+    var wrapperWidth = d3.select('.xtr-main-radar').node().getBoundingClientRect().width;
+    var calculateWidth = window.innerHeight > wrapperWidth ? wrapperWidth : window.innerHeight;
+
     // var size = (window.innerHeight - 133) < 620 ? 620 : window.innerHeight - 133;
-    var size = (window.innerHeight - 133) < 550 ? 550 : window.innerHeight - 133;
+    var size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
 
     new GraphingRadar(size, radar).init().plot();
 }

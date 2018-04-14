@@ -457,13 +457,13 @@ const Radar = function (size, radar) {
         .attr('id', 'xtr-quadrant-table-' + quadrant.order);
 
       var quadrantRadioItem = d3.select('#quadrants-list').append('li')
-        .attr('class', 'mdl-list__item');
+        .attr('class', 'mdl-list__item')
+        .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
+        .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order));
 
       quadrantRadioItem.append('span')
         .attr('class', 'mdl-list__item-primary-content')
-        .text(quadrant.quadrant.name())
-        .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
-        .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order));
+        .text(quadrant.quadrant.name());
 
       quadrantRadioItem.append('span')
         .attr('class', 'mdl-list__item-secondary-action')

@@ -1,3 +1,13 @@
+body{
+    > .mdl-layout__container{
+        max-width: 1920px;
+        margin: auto;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+}
+
 .xtr {
     &-main {
         flex: 1;
@@ -6,21 +16,24 @@
         flex-direction: row;
         &-radar {
             display: none;
-            @media screen and (min-width: 792px) {
+            @media screen and (min-width: 1025px) {
                 display: flex;
                 flex: 1;
                 flex-shrink: 0;
                 padding-right: 16px;
-                justify-content: center;
-                align-items: center;
                 overflow: auto;
+            }
+
+            #radar{
+                margin: 0 auto;
+                padding: 16px;  
             }
         }
         &-quadrant-data {
             position: relative;
             min-width: 100%;
-            @media screen and (min-width: 792px) {
-                min-width: 200px;
+            @media screen and (min-width: 1025px) {
+                min-width: 240px;
             }
             .mdl-grid.mdl-grid--no-spacing>.mdl-cell.mdl-card {
                 min-height: 0;
@@ -28,6 +41,20 @@
                 &:first-child {
                     margin-top: 0;
                 }
+            }
+        }
+    }
+}
+
+.mdl-list-wrapper {
+    .mdl-list {
+        margin: 0;
+        &__item {
+            font-size: 14px;
+            white-space: nowrap;
+            >* {
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
