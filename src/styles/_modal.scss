@@ -1,0 +1,23 @@
+@import "~dialog-polyfill/dialog-polyfill.css";
+
+.mdl-dialog {
+    width: calc(100vw - 100px);
+    height: calc(100vh - 100px);
+    overflow: hidden;
+    @media screen and (min-width: 1025px) {
+        width: 600px;
+    }
+    &-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        top: 0;
+        left: 0;
+    }
+    &__content {
+        flex: 1;
+        overflow: auto;
+    }
+}

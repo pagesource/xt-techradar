@@ -2,13 +2,23 @@ const d3 = require('d3');
 const d3tip = require('d3-tip');
 const Chance = require('chance');
 const _ = require('lodash');
+const md = require('markdown-it')();
+const dialogPolyfill = require('dialog-polyfill');
 
 const RingCalculator = require('../util/ringCalculator');
 
 const MIN_BLIP_WIDTH = 12;
 
 const Radar = function (size, radar, tags) {
-  var svg, radarElement;
+  var svg, radarElement, dialog;
+
+  dialog = document.querySelector('dialog');
+  if (!dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+  dialog.querySelector('.close').addEventListener('click', function () {
+    dialog.close();
+  });
 
   var tip = d3tip().attr('class', 'd3-tip').html(function (text) {
     return text;
@@ -64,8 +74,8 @@ const Radar = function (size, radar, tags) {
   function plotQuadrant(rings, quadrant) {
     var quadrantGroup = svg.append('g')
       .attr('class', 'quadrant-group quadrant-group-' + quadrant.order);
-    
-      // Old code
+
+    // Old code
     // .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
     // .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order))
     // .on('click', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle));
@@ -129,12 +139,6 @@ const Radar = function (size, radar, tags) {
       .attr('d', "M420.084,282.092c-1.073,0-2.16,0.103-3.243,0.313c-6.912,1.345-13.188,8.587-11.423,16.874c1.732,8.141,8.632,13.711,17.806,13.711c0.025,0,0.052,0,0.074-0.003c0.551-0.025,1.395-0.011,2.225-0.109c4.404-0.534,8.148-2.218,10.069-6.487c1.747-3.886,2.114-7.993,0.913-12.118C434.379,286.944,427.494,282.092,420.084,282.092")
       .attr('transform', 'scale(' + (22 / 64) + ') translate(' + (-404 + x * (64 / 22) - 17) + ', ' + (-282 + y * (64 / 22) - 17) + ')');
   }
-
-  // function addRing(ring, order) {
-  //   var table = d3.select('.quadrant-table.' + order);
-  //   table.append('h3').text(ring);
-  //   return table.append('ul');
-  // }
 
   function calculateBlipCoordinates(blip, chance, minRadius, maxRadius, startAngle) {
     var adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle));
@@ -215,7 +219,7 @@ const Radar = function (size, radar, tags) {
           allBlipCoordinatesInRing);
 
         allBlipCoordinatesInRing.push(coordinates);
-        drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList );
+        drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList);
       });
     });
   }
@@ -248,7 +252,7 @@ const Radar = function (size, radar, tags) {
     var x = coordinates[0];
     var y = coordinates[1];
 
-    var group = quadrantGroup.append('g').attr('class', 'blip-link');
+    var group = quadrantGroup.append('g').attr('class', 'blip-link blip-link-' + blip.number());
 
     if (blip.isNew()) {
       triangle(blip, x, y, order, group);
@@ -269,21 +273,15 @@ const Radar = function (size, radar, tags) {
       .append('li')
       .attr('class', 'xtr-list__data-item mdl-list__item ' + order);
 
+    // Add data to the link
     blipListItem.node().dataset.data = blip.tags();
+    blipListItem.node().dataset.number = blip.number();
 
     var blipText = blip.number() + '. ' + blip.name() + (blip.topic() ? ('. - ' + blip.topic()) : '');
 
     blipListItem.append('span')
       .attr('class', 'blip-list-item')
       .text(blipText);
-
-    // Old code
-    // var blipItemDescription = blipListItem.append('div')
-    //   .attr('class', 'blip-item-description');
-
-    // if (blip.description()) {
-    //   blipItemDescription.append('p').html(blip.description());
-    // }
 
     var mouseOver = function () {
       d3.selectAll('g.blip-link').attr('opacity', 0.3);
@@ -301,141 +299,21 @@ const Radar = function (size, radar, tags) {
 
     blipListItem.on('mouseover', mouseOver).on('mouseout', mouseOut);
     group.on('mouseover', mouseOver).on('mouseout', mouseOut);
-   
-    // Old code 
-    // var clickBlip = function () {
-    //   d3.select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
-    //     d3.select('.blip-item-description.expanded').classed("expanded", false);
-    //   blipItemDescription.classed("expanded", !blipItemDescription.classed("expanded"));
 
-    //   blipItemDescription.on('click', function () {
-    //     d3.event.stopPropagation();
-    //   });
-    // };
-
-    // blipListItem.on('click', clickBlip);
-
-    // New code
-    // Make Ajax call
-
-    const clickBlip = function() {
-      console.log(blip, order);
-      console.log('TBD Ajax call!');
+    const clickBlip = function () {
+      d3.text('/docs/parcel.md').then(function (text) {
+        createDialog(text);
+      });
     }
 
     blipListItem.on('click', clickBlip);
     group.on('click', clickBlip)
   }
 
-  function removeHomeLink() {
-    d3.select('.home-link').remove();
-    d3.select('.home-button').remove();
-  }
-
-  function createHomeLink(pageElement) {
-
-    if (d3.select('.home-button').empty()) {
-      d3.select('.xtr-sidebar')
-        .insert('div', ':first-child')
-        .classed('button', true)
-        .classed('home-button', true)
-        .on('click', redrawFullRadar)
-        .append('span')
-        .text('Home');
-    }
-
-
-    if (pageElement.select('.home-link').empty()) {
-      pageElement.append('div')
-        .html('&#171; Back to Radar home')
-        .classed('home-link', true)
-        .classed('selected', true)
-        .on('click', redrawFullRadar)
-        .append('g')
-        .attr('fill', '#626F87')
-        .append('path')
-        .attr('d', 'M27.6904224,13.939279 C27.6904224,13.7179572 27.6039633,13.5456925 27.4314224,13.4230122 L18.9285959,6.85547454 C18.6819796,6.65886965 18.410898,6.65886965 18.115049,6.85547454 L9.90776939,13.4230122 C9.75999592,13.5456925 9.68592041,13.7179572 9.68592041,13.939279 L9.68592041,25.7825947 C9.68592041,25.979501 9.74761224,26.1391059 9.87092041,26.2620876 C9.99415306,26.3851446 10.1419265,26.4467108 10.3145429,26.4467108 L15.1946918,26.4467108 C15.391698,26.4467108 15.5518551,26.3851446 15.6751633,26.2620876 C15.7984714,26.1391059 15.8600878,25.979501 15.8600878,25.7825947 L15.8600878,18.5142424 L21.4794061,18.5142424 L21.4794061,25.7822933 C21.4794061,25.9792749 21.5410224,26.1391059 21.6643306,26.2620876 C21.7876388,26.3851446 21.9477959,26.4467108 22.1448776,26.4467108 L27.024951,26.4467108 C27.2220327,26.4467108 27.3821898,26.3851446 27.505498,26.2620876 C27.6288061,26.1391059 27.6904224,25.9792749 27.6904224,25.7822933 L27.6904224,13.939279 Z M18.4849735,0.0301425662 C21.0234,0.0301425662 23.4202449,0.515814664 25.6755082,1.48753564 C27.9308469,2.45887984 29.8899592,3.77497963 31.5538265,5.43523218 C33.2173918,7.09540937 34.5358755,9.05083299 35.5095796,11.3015031 C36.4829061,13.5518717 36.9699469,15.9439104 36.9699469,18.4774684 C36.9699469,20.1744196 36.748098,21.8101813 36.3044755,23.3844521 C35.860551,24.9584216 35.238498,26.4281731 34.4373347,27.7934053 C33.6362469,29.158336 32.6753041,30.4005112 31.5538265,31.5197047 C30.432349,32.6388982 29.1876388,33.5981853 27.8199224,34.3973401 C26.4519041,35.1968717 24.9791531,35.8176578 23.4016694,36.2606782 C21.8244878,36.7033971 20.1853878,36.9247943 18.4849735,36.9247943 C16.7841816,36.9247943 15.1453837,36.7033971 13.5679755,36.2606782 C11.9904918,35.8176578 10.5180429,35.1968717 9.15002449,34.3973401 C7.78223265,33.5978839 6.53752245,32.6388982 5.41612041,31.5197047 C4.29464286,30.4005112 3.33339796,29.158336 2.53253673,27.7934053 C1.73144898,26.4281731 1.10909388,24.9584216 0.665395918,23.3844521 C0.22184898,21.8101813 0,20.1744196 0,18.4774684 C0,16.7801405 0.22184898,15.1446802 0.665395918,13.5704847 C1.10909388,11.9962138 1.73144898,10.5267637 2.53253673,9.16153157 C3.33339796,7.79652546 4.29464286,6.55435031 5.41612041,5.43523218 C6.53752245,4.3160387 7.78223265,3.35675153 9.15002449,2.55752138 C10.5180429,1.75806517 11.9904918,1.13690224 13.5679755,0.694183299 C15.1453837,0.251464358 16.7841816,0.0301425662 18.4849735,0.0301425662 L18.4849735,0.0301425662 Z');
-    }
-  }
-
-  function removeRadarLegend() {
-    d3.select('.legend').remove();
-  }
-
-  function drawLegend(order) {
-    removeRadarLegend();
-
-    var triangleKey = "New or moved";
-    var circleKey = "No change";
-
-    var container = d3.select('svg').append('g')
-      .attr('class', 'legend legend' + "-" + order);
-
-    var x = 10;
-    var y = 10;
-
-
-    if (order == "first") {
-      x = 4 * size / 5;
-      y = 1 * size / 5;
-    }
-
-    if (order == "second") {
-      x = 1 * size / 5 - 15;
-      y = 1 * size / 5 - 20;
-    }
-
-    if (order == "third") {
-      x = 1 * size / 5 - 15;
-      y = 4 * size / 5 + 15;
-    }
-
-    if (order == "fourth") {
-      x = 4 * size / 5;
-      y = 4 * size / 5;
-    }
-
-    d3.select('.legend')
-      .attr('class', 'legend legend-' + order)
-      .transition()
-      .style('visibility', 'visible');
-
-    triangleLegend(x, y, container);
-
-    container
-      .append('text')
-      .attr('x', x + 15)
-      .attr('y', y + 5)
-      .attr('font-size', '0.8em')
-      .text(triangleKey);
-
-
-    circleLegend(x, y + 20, container);
-
-    container
-      .append('text')
-      .attr('x', x + 15)
-      .attr('y', y + 25)
-      .attr('font-size', '0.8em')
-      .text(circleKey);
-  }
-
   function redrawFullRadar() {
-    // Old code
-    // removeHomeLink();
-    // removeRadarLegend();
 
     svg.style('left', 0).style('right', 0);
 
-    // Old code
-    // d3.selectAll('.button')
-    //   .classed('selected', false)
-    //   .classed('full-view', true);
-
-    // d3.selectAll('.quadrant-table').classed('selected', false);
-    // d3.selectAll('.home-link').classed('selected', false);
-
-    // New code
     d3.selectAll('.xtr-quadrant-list')
       .classed('selected', true);
 
@@ -453,44 +331,9 @@ const Radar = function (size, radar, tags) {
       .style('pointer-events', 'auto');
   }
 
-  function plotQuadrantButtons(quadrants, header) {
+  function plotQuadrantRadioButtons(quadrants, header) {
 
-    function addButton(quadrant, i) {
-
-      // // Old code 
-      // radarElement
-      //   .append('div')
-      //   .attr('class', 'quadrant-table ' + quadrant.order);
-
-
-      // // Old code
-      // header.append('div')
-      //   .attr('class', 'button ' + quadrant.order + ' full-view')
-      //   .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
-      //   .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order))
-      //   .on('click', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle))
-      //   .append('span')
-      //   .text(quadrant.quadrant.name());
-
-
-      // New code
-      // var quadrantTable = d3.select('#xtr-main-quadrant-tables')
-      //   .append('div')
-      //   .attr('class', 'mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col ' + quadrant.order)
-      //   .append('table')
-      //   .attr('class', 'mdl-data-table');
-
-      // quadrantTable
-      //   .append('thead')
-      //   .append('tr')
-      //   .append('th')
-      //   .attr('class', 'mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--teal-700')
-      //   .text(quadrant.quadrant.name());
-
-      // quadrantTable
-      //   .append('tbody')
-      //   .attr('id', 'xtr-quadrant-table-' + quadrant.order);
-
+    function addRadioButton(quadrant, i) {
 
       d3.select('#xtr-main-quadrant-lists .mdl-card')
         .append('div')
@@ -507,7 +350,7 @@ const Radar = function (size, radar, tags) {
         .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order));
 
       quadrantRadioItem.append('span')
-        .attr('class', 'mdl-list__item-primary-content')
+        .attr('class', 'mdl-list__item-primary-content mdl-typography--text-capitalize')
         .text(quadrant.quadrant.name());
 
       quadrantRadioItem.append('span')
@@ -520,7 +363,7 @@ const Radar = function (size, radar, tags) {
         .attr('id', 'quadrant-radio-' + quadrant.order)
         .attr('class', 'mdl-radio__button quadrant-radio')
         .attr('name', 'quadrant')
-        .attr('value', quadrant.quadrant.name().toLowerCase())
+        .attr('value', quadrant.quadrant.name())
         .on('change', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle));
     }
 
@@ -528,7 +371,7 @@ const Radar = function (size, radar, tags) {
     d3.select('#quadrants-list').append('li')
       .attr('class', 'mdl-list__item')
       .append('span')
-      .attr('class', 'mdl-typography--menu mdl-color-text--grey-600')
+      .attr('class', 'mdl-typography--menu mdl-typography--text-uppercase mdl-color-text--grey-600')
       .text('Select Quadrant');
 
     // New code 
@@ -536,7 +379,7 @@ const Radar = function (size, radar, tags) {
       .attr('class', 'mdl-list__item');
 
     allQuadrantsRadioItem.append('span')
-      .attr('class', 'mdl-list__item-primary-content')
+      .attr('class', 'mdl-list__item-primary-content mdl-typography--text-capitalize')
       .text('All');
 
     allQuadrantsRadioItem.append('span')
@@ -554,7 +397,7 @@ const Radar = function (size, radar, tags) {
       .on('change', redrawFullRadar);
 
     _.each([0, 1, 2, 3], function (i) {
-      addButton(quadrants[i], i);
+      addRadioButton(quadrants[i], i);
     });
 
     // Old code
@@ -564,31 +407,31 @@ const Radar = function (size, radar, tags) {
     //   .text('Print this radar')
     //   .on('click', window.print.bind(window));
   }
-  
+
   function getSelectedTags() {
     const cboxes = document.getElementsByName('tags[]');
     const len = cboxes.length;
     const data = [];
-    for (let i=0; i<len; i++) {
-      if(cboxes[i].checked){
+    for (let i = 0; i < len; i++) {
+      if (cboxes[i].checked) {
         data.push(cboxes[i].value);
       }
     }
     return data;
   }
 
-  function plotTagButtons(tagValues, sidebar) {
+  function plotTagSwitchButtons(tagValues, sidebar) {
 
     function addTagSwitch(tag) {
       var tagCheckboxItem = d3.select('#quadrants-list').append('li')
-      .attr('class', 'mdl-list__item');
+        .attr('class', 'mdl-list__item');
 
       tagCheckboxItem.append('span')
-      .attr('class', 'mdl-list__item-primary-content')
-      .text(_.capitalize(tag));
+        .attr('class', 'mdl-list__item-primary-content mdl-typography--text-capitalize')
+        .text(tag);
 
 
-       tagCheckboxItem.append('span')
+      tagCheckboxItem.append('span')
         .attr('class', 'mdl-list__item-secondary-action')
         .append('label')
         .attr('class', 'mdl-switch mdl-js-switch mdl-js-ripple-effect')
@@ -600,32 +443,16 @@ const Radar = function (size, radar, tags) {
         .attr('name', 'tags[]')
         .attr('checked', true)
         .attr('value', tag)
-        .on('change', function(){
-          var selectedTags = getSelectedTags();
-          d3.selectAll('.xtr-list__data-item').each(function(){
-            var dataItem = d3.select(this);
-            var isHidden = true;
-            var blipTags = dataItem.node().dataset.data.split(',');
-            blipTags.forEach(function(blipTag){
-              selectedTags.forEach(function(selectedTag){
-                if(blipTag === selectedTag) {
-                  isHidden = false;
-                }
-              });
-            });
-            dataItem.classed('hidden', isHidden);
-          });
-          //console.log(getSelectedTags());
-        });
+        .on('change', switchTag.bind({}, tagValues));
     }
 
-     d3.select('#quadrants-list').append('li')
+    d3.select('#quadrants-list').append('li')
       .attr('class', 'mdl-list__item')
       .append('span')
-      .attr('class', 'mdl-typography--menu mdl-color-text--grey-600')
+      .attr('class', 'mdl-typography--menu mdl-typography--text-uppercase mdl-color-text--grey-600')
       .text('Select Tags');
 
-    _.each(tagValues, (tag) => {
+    _.each(tagValues, function (tag) {
       addTagSwitch(tag);
     });
   }
@@ -640,20 +467,35 @@ const Radar = function (size, radar, tags) {
     d3.selectAll('.quadrant-group:not(.quadrant-group-' + order + ')').style('opacity', 1);
   }
 
+  function switchTag(allTags) {
+    var selectedTags = getSelectedTags();
+    d3.selectAll('.xtr-list__data-item').each(function () {
+      var isHidden = true;
+      var dataItem = d3.select(this);
+      var blipTags = dataItem.node().dataset.data.split(',');
+      var blipNumber = dataItem.node().dataset.number;
+      var dataBlip = d3.select('.blip-link-' + blipNumber);
+      blipTags.forEach(function (blipTag) {
+        selectedTags.forEach(function (selectedTag) {
+          if (blipTag === selectedTag) {
+            isHidden = false;
+          }
+        });
+      });
+      dataBlip.classed('hidden', isHidden);
+      dataItem.classed('hidden', isHidden);
+    });
+  }
+
+  function createDialog(mdData) {
+    dialog.open = false;
+    const result = md.render(mdData);
+    dialog.querySelector('.mdl-dialog__content').innerHTML = result;
+    dialog.showModal();
+  }
+
   function selectQuadrant(order, startAngle) {
 
-    // Old code
-    // d3.selectAll('.home-link').classed('selected', false);
-    // createHomeLink(d3.select('header'));
-
-    // Old code
-    // d3.selectAll('.button').classed('selected', false).classed('full-view', false);
-    // d3.selectAll('.button.' + order).classed('selected', true);
-    // d3.selectAll('.quadrant-table').classed('selected', false);
-    // d3.selectAll('.quadrant-table.' + order).classed('selected', true);
-    // d3.selectAll('.blip-item-description').classed('expanded', false);
-
-    // New code
     d3.selectAll('.xtr-quadrant-list').classed('selected', false);
     d3.selectAll('.xtr-quadrant-list.' + order).classed('selected', true);
 
@@ -674,10 +516,6 @@ const Radar = function (size, radar, tags) {
     var blipScale = 3 / 4;
     var blipTranslate = (1 - blipScale) / blipScale;
 
-    // Old code
-    // svg.style('left', moveLeft + 'px').style('right', moveRight + 'px');
-
-    // New code
     svg.style('left', 0).style('right', 0);
 
     d3.select('.quadrant-group-' + order)
@@ -701,19 +539,9 @@ const Radar = function (size, radar, tags) {
       .duration(1000)
       .style('pointer-events', 'none')
       .attr('transform', 'translate(' + translateXAll + ',' + translateYAll + ')scale(0)');
-
-
-    // Old code
-    // if (d3.select('.legend.legend-' + order).empty()) {
-    //   drawLegend(order);
-    // }
   }
 
   self.init = function () {
-    // old code
-    // radarElement = d3.select('body').append('div').attr('id', 'radar');
-
-    // new code
     radarElement = d3.select('.xtr-main-radar').append('div').attr('id', 'radar');
     return self;
   };
@@ -724,12 +552,8 @@ const Radar = function (size, radar, tags) {
     rings = radar.rings();
     quadrants = radar.quadrants();
 
-    // Old Code
-    // plotQuadrantButtons(quadrants, d3.select('.xtr-sidebar'));
-    
-    // New Code
-    plotQuadrantButtons(quadrants);
-    plotTagButtons(tags);
+    plotQuadrantRadioButtons(quadrants);
+    plotTagSwitchButtons(tags);
 
     radarElement.style('height', size + 14 + 'px');
     svg = radarElement.append("svg").call(tip);

@@ -2,6 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const argv = require('yargs').argv;
 const webpack = require('webpack');
 
@@ -60,7 +61,8 @@ module.exports = {
             title: 'XT | Tech Radar',
             minify: argv.env === 'prod' ? htmlMinifyOptions : false
         }),
-        new ExtractTextPlugin('[chunkhash].bundle.css')
+        new ExtractTextPlugin('[chunkhash].bundle.css'),
+        new CopyWebpackPlugin([{from: 'src/docs', to: 'docs'}])
     ],
     mode: argv.env === 'prod' ? 'production' : 'development'
 };
