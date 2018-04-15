@@ -1,10 +1,6 @@
 const d3 = require('d3');
-const _ = {
-    map: require('lodash/map'),
-    uniqBy: require('lodash/uniqBy'),
-    capitalize: require('lodash/capitalize'),
-    each: require('lodash/each')
-};
+const _ = require('lodash');
+
 const defaults  = require('./defaults');
 const Radar = require('../models/radar');
 const Quadrant = require('../models/quadrant');
@@ -25,31 +21,51 @@ const plotRadar = function (title, blips) {
         isNew: 'false',
         name: 'Composer',
         quadrant: 'grow',
-        ring: 'concepts'
+        ring: 'concepts',
+        "platform": [
+      "web",
+      "mobile",
+      "ar/vr"
+    ]
     },{
         description: 'Dolor fugiat ut nulla laboris aliqua.',
         isNew: 'false',
         name: 'Composer',
         quadrant: 'grow',
-        ring: 'concepts'
+        ring: 'concepts',
+        "platform": [
+      "web",
+      "mobile",
+      "ar/vr"
+    ]
     }, {
         description: 'Dolor fugiat ut nulla laboris aliqua.',
         isNew: 'false',
         name: 'Composer',
         quadrant: 'ubiquitous',
-        ring: 'frameworks'
+        ring: 'frameworks',
+        "platform": [
+      "web",
+      "mobile"
+    ]
     }, {
         description: 'Dolor fugiat ut nulla laboris aliqua.',
         isNew: 'false',
         name: 'Composer',
         quadrant: 'de-emphasize',
-        ring: 'tools'
+        ring: 'tools',
+         "platform": [
+      "web",
+      "mobile"
+    ]
     }];
 
     var quadrantNames = defaults.quadrantNames;
     var ringNames = defaults.ringNames;
 
-    var rings = _.map(_.uniqBy(blips, 'ring'), 'ring');
+    var rings = _.map(_.uniqBy(blips, defaults.ringsKey), defaults.ringsKey);
+    var tags = _.union(..._.map(_.uniqBy(blips, defaults.tagsKey), defaults.tagsKey));
+
     var ringMap = {};
     var quadrants = {};
     var maxRings = 4;
@@ -86,7 +102,7 @@ const plotRadar = function (title, blips) {
         });
         // Add the blip only if it matches either of the rings and quadrants
         if(quadrant !== '' && ring !== '') {
-            quadrants[quadrant].add(new Blip(blip.name, ringMap[ring], blip.isNew.toLowerCase() === 'true', blip.topic, blip.description));
+            quadrants[quadrant].add(new Blip(blip.name, ringMap[ring], blip.isNew.toLowerCase() === 'true', blip.topic, blip.description, blip[defaults.tagsKey]));
         }
     });
 
@@ -103,7 +119,7 @@ const plotRadar = function (title, blips) {
     // var size = (window.innerHeight - 133) < 620 ? 620 : window.innerHeight - 133;
     var size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
 
-    new GraphingRadar(size, radar).init().plot();
+    new GraphingRadar(size, radar, tags).init().plot();
 }
 
 function plotErrorMessage(exception) {

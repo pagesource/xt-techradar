@@ -12,9 +12,6 @@ const RingCalculator = function (numberOfRings, maxRadius) {
   self.getRadius = function(ring) {
     var total = self.sum(numberOfRings);
     var sum = self.sum(ring);
-
-    console.log(maxRadius * sum / total, maxRadius, sum, total)
-
     return maxRadius * sum / total;
   };
 

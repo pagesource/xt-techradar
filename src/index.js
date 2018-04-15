@@ -1,15 +1,6 @@
 import './index.scss';
 import 'material-design-lite';
-import $ from 'jquery';
-import plotRadar from './scripts/util/factory';
-
-const materializeMyHTML = function (str) {
-    var html = $.parseHTML(str);
-    $('*', $(html)).each(function () {
-        componentHandler.upgradeElement(this);
-    });
-    return html;
-};
+import plotRadar from './scripts/util/factory'; 
 // setTimeout(() => {
 //     $('.mdl-list').append(materializeMyHTML(`
 //     <li class="mdl-list__item">
