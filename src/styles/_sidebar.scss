@@ -8,4 +8,109 @@
             height: 151px;
         }
     }
+    &-quadrant-list {
+        display: none;
+        &.selected {
+            display: block;
+        }
+        .mdl-list {
+            margin: 0;
+            padding: 0;
+            &__item {
+                white-space: nowrap;
+                position: relative;
+                >* {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                &.first,
+                &.second,
+                &.third,
+                &.fourth {
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 3px;
+                        height: 100%;
+                        background-color: #FFFFFF;
+                    }
+                }
+                &.first {
+                    &::before {
+                        background-color: $q1-color;
+                    }
+                }
+                &.second {
+                    &::before {
+                        background-color: $q2-color;
+                    }
+                }
+                &.third {
+                    &::before {
+                        background-color: $q3-color;
+                    }
+                }
+                &.fourth {
+                    &::before {
+                        background-color: $q4-color;
+                    }
+                }
+
+                .mdl-typography--menu.first{
+                    color: $q1-color;
+                }
+                .mdl-typography--menu.second{
+                    color: $q2-color;
+                }
+                .mdl-typography--menu.third{
+                    color: $q3-color;
+                }
+                .mdl-typography--menu.fourth{
+                    color: $q4-color;
+                }
+            }
+        }
+    }
+}
+
+#quadrants-list {
+    .mdl-list__item {
+        position: relative;
+        &.first,
+        &.second,
+        &.third,
+        &.fourth {
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 3px;
+                height: 100%;
+                background-color: #FFFFFF;
+            }
+        }
+        &.first {
+            &::after {
+                background-color: $q1-color;
+            }
+        }
+        &.second {
+            &::after {
+                background-color: $q2-color;
+            }
+        }
+        &.third {
+            &::after {
+                background-color: $q3-color;
+            }
+        }
+        &.fourth {
+            &::after {
+                background-color: $q4-color;
+            }
+        }
+    }
 }

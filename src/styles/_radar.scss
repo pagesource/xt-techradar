@@ -1,0 +1,67 @@
+svg#radar-plot {
+    path {
+        &.ring-arc-3 {
+          stroke: none;
+          fill: $grey-light;
+        }
+        &.ring-arc-2 {
+          stroke: none;
+          fill: $grey;
+        }
+        &.ring-arc-1 {
+          stroke: none;
+          fill: $grey-dark;
+        }
+        &.ring-arc-0 {
+          stroke: none;
+          fill: $grey-darkest;
+        }
+      }
+
+      .blip-link {
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .quadrant-group {
+        cursor: pointer;
+      }
+
+      circle, polygon, path {
+        &.first {
+          fill: $q1-color;
+          stroke: none;
+        }
+        &.second {
+          fill: $q2-color;
+          stroke: none;
+        }
+        &.third {
+          fill: $q3-color;
+          stroke: none;
+        }
+        &.fourth {
+          fill: $q4-color;
+          stroke: none;
+        }
+      }
+
+      line {
+        stroke: white;
+      }
+
+      text {
+        &.blip-text {
+          font-size: 9px;
+          font-style: italic;
+          fill: $white;
+        }
+
+        &.line-text {
+          font-weight: 400;
+          text-transform: uppercase;
+          fill: $black;
+          font-size: 11px;
+        }
+      }
+}

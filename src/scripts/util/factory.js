@@ -5,7 +5,7 @@ const _ = {
     capitalize: require('lodash/capitalize'),
     each: require('lodash/each')
 };
-
+const defaults  = require('./defaults');
 const Radar = require('../models/radar');
 const Quadrant = require('../models/quadrant');
 const Ring = require('../models/ring');
@@ -26,6 +26,12 @@ const plotRadar = function (title, blips) {
         name: 'Composer',
         quadrant: 'grow',
         ring: 'concepts'
+    },{
+        description: 'Dolor fugiat ut nulla laboris aliqua.',
+        isNew: 'false',
+        name: 'Composer',
+        quadrant: 'grow',
+        ring: 'concepts'
     }, {
         description: 'Dolor fugiat ut nulla laboris aliqua.',
         isNew: 'false',
@@ -40,8 +46,8 @@ const plotRadar = function (title, blips) {
         ring: 'tools'
     }];
 
-    var quadrantNames = ['scale/grow', 'ubiquitous', 'de-emphasize', 'incubate'];
-    var ringNames = ['concepts', 'tools/sdk', 'frameworks'];
+    var quadrantNames = defaults.quadrantNames;
+    var ringNames = defaults.ringNames;
 
     var rings = _.map(_.uniqBy(blips, 'ring'), 'ring');
     var ringMap = {};

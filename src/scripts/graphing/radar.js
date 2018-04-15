@@ -15,8 +15,8 @@ const Radar = function (size, radar) {
   });
 
   tip.direction(function () {
-    if (d3.select('.quadrant-table.selected').node()) {
-      var selectedQuadrant = d3.select('.quadrant-table.selected');
+    if (d3.select('.xtr-quadrant-list.selected').node()) {
+      var selectedQuadrant = d3.select('.xtr-quadrant-list.selected');
       if (selectedQuadrant.classed('first') || selectedQuadrant.classed('fourth'))
         return 'ne';
       else
@@ -63,10 +63,12 @@ const Radar = function (size, radar) {
 
   function plotQuadrant(rings, quadrant) {
     var quadrantGroup = svg.append('g')
-      .attr('class', 'quadrant-group quadrant-group-' + quadrant.order)
-      .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
-      .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order))
-      .on('click', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle));
+      .attr('class', 'quadrant-group quadrant-group-' + quadrant.order);
+    
+      // Old code
+    // .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
+    // .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order))
+    // .on('click', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle));
 
     rings.forEach(function (ring, i) {
       var arc = d3.arc()
@@ -128,11 +130,11 @@ const Radar = function (size, radar) {
       .attr('transform', 'scale(' + (22 / 64) + ') translate(' + (-404 + x * (64 / 22) - 17) + ', ' + (-282 + y * (64 / 22) - 17) + ')');
   }
 
-  function addRing(ring, order) {
-    var table = d3.select('.quadrant-table.' + order);
-    table.append('h3').text(ring);
-    return table.append('ul');
-  }
+  // function addRing(ring, order) {
+  //   var table = d3.select('.quadrant-table.' + order);
+  //   table.append('h3').text(ring);
+  //   return table.append('ul');
+  // }
 
   function calculateBlipCoordinates(blip, chance, minRadius, maxRadius, startAngle) {
     var adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle));
@@ -168,9 +170,11 @@ const Radar = function (size, radar) {
     startAngle = quadrantWrapper.startAngle;
     order = quadrantWrapper.order;
 
-    d3.select('.quadrant-table.' + order)
-      .append('h2')
-      .attr('class', 'quadrant-table__name')
+    d3.select('#xtr-quadrant-list-' + order + ' .mdl-list')
+      .append('li')
+      .attr('class', 'mdl-list__item')
+      .append('span')
+      .attr('class', 'mdl-typography--menu mdl-typography--text-uppercase ' + order)
       .text(quadrant.name());
 
     blips = quadrant.blips();
@@ -196,10 +200,14 @@ const Radar = function (size, radar) {
       }, 0);
       var chance = new Chance(Math.PI * sumRing * ring.name().length * sumQuadrant * quadrant.name().length);
 
-      var ringList = addRing(ring.name(), order);
+      // Old code
+      // var ringList = addRing(ring.name(), order);
+
+      // New code
+      var ringList = d3.select('#xtr-quadrant-list-' + order + ' .mdl-list');
       var allBlipCoordinatesInRing = [];
 
-      ringBlips.forEach(function (blip) {
+      ringBlips.forEach(function (blip, i, blips) {
         const coordinates = findBlipCoordinates(blip,
           minRadius,
           maxRadius,
@@ -207,7 +215,8 @@ const Radar = function (size, radar) {
           allBlipCoordinatesInRing);
 
         allBlipCoordinatesInRing.push(coordinates);
-        drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList);
+        const isLastBlip = (blips.length - 1) === i;
+        drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList, isLastBlip);
       });
     });
   }
@@ -236,7 +245,7 @@ const Radar = function (size, radar) {
     }
   }
 
-  function drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList) {
+  function drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList, isLastBlip) {
     var x = coordinates[0];
     var y = coordinates[1];
 
@@ -257,45 +266,65 @@ const Radar = function (size, radar) {
       .attr('text-anchor', 'middle')
       .text(blip.number());
 
-    var blipListItem = ringList.append('li');
+    var blipListItem = ringList
+      .append('li')
+      .attr('class', 'mdl-list__item ' + order)
+      .classed('mdl-menu__item--full-bleed-divider', isLastBlip);
+
     var blipText = blip.number() + '. ' + blip.name() + (blip.topic() ? ('. - ' + blip.topic()) : '');
-    blipListItem.append('div')
+
+    blipListItem.append('span')
       .attr('class', 'blip-list-item')
       .text(blipText);
 
-    var blipItemDescription = blipListItem.append('div')
-      .attr('class', 'blip-item-description');
-    if (blip.description()) {
-      blipItemDescription.append('p').html(blip.description());
-    }
+    // Old code
+    // var blipItemDescription = blipListItem.append('div')
+    //   .attr('class', 'blip-item-description');
+
+    // if (blip.description()) {
+    //   blipItemDescription.append('p').html(blip.description());
+    // }
 
     var mouseOver = function () {
       d3.selectAll('g.blip-link').attr('opacity', 0.3);
       group.attr('opacity', 1.0);
-      blipListItem.selectAll('.blip-list-item').classed('highlight', true);
+
+      blipListItem.classed('mdl-color--grey-300', true);
       tip.show(blip.name(), group.node());
     };
 
     var mouseOut = function () {
       d3.selectAll('g.blip-link').attr('opacity', 1.0);
-      blipListItem.selectAll('.blip-list-item').classed('highlight', false);
+      blipListItem.classed('mdl-color--grey-300', false);
       tip.hide().style('left', 0).style('top', 0);
     };
 
     blipListItem.on('mouseover', mouseOver).on('mouseout', mouseOut);
     group.on('mouseover', mouseOver).on('mouseout', mouseOut);
+   
+    // Old code 
+    // var clickBlip = function () {
+    //   d3.select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
+    //     d3.select('.blip-item-description.expanded').classed("expanded", false);
+    //   blipItemDescription.classed("expanded", !blipItemDescription.classed("expanded"));
 
-    var clickBlip = function () {
-      d3.select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
-        d3.select('.blip-item-description.expanded').classed("expanded", false);
-      blipItemDescription.classed("expanded", !blipItemDescription.classed("expanded"));
+    //   blipItemDescription.on('click', function () {
+    //     d3.event.stopPropagation();
+    //   });
+    // };
 
-      blipItemDescription.on('click', function () {
-        d3.event.stopPropagation();
-      });
-    };
+    // blipListItem.on('click', clickBlip);
+
+    // New code
+    // Make Ajax call
+
+    const clickBlip = function() {
+      console.log(blip, order);
+      console.log('TBD Ajax call!');
+    }
 
     blipListItem.on('click', clickBlip);
+    group.on('click', clickBlip)
   }
 
   function removeHomeLink() {
@@ -392,17 +421,23 @@ const Radar = function (size, radar) {
   }
 
   function redrawFullRadar() {
-    removeHomeLink();
-    removeRadarLegend();
+    // Old code
+    // removeHomeLink();
+    // removeRadarLegend();
 
     svg.style('left', 0).style('right', 0);
 
-    d3.selectAll('.button')
-      .classed('selected', false)
-      .classed('full-view', true);
+    // Old code
+    // d3.selectAll('.button')
+    //   .classed('selected', false)
+    //   .classed('full-view', true);
 
-    d3.selectAll('.quadrant-table').classed('selected', false);
-    d3.selectAll('.home-link').classed('selected', false);
+    // d3.selectAll('.quadrant-table').classed('selected', false);
+    // d3.selectAll('.home-link').classed('selected', false);
+
+    // New code
+    d3.selectAll('.xtr-quadrant-list')
+      .classed('selected', true);
 
     d3.selectAll('.quadrant-group')
       .transition()
@@ -439,25 +474,34 @@ const Radar = function (size, radar) {
 
 
       // New code
-      var quadrantTable = d3.select('#xtr-main-quadrant-tables')
+      // var quadrantTable = d3.select('#xtr-main-quadrant-tables')
+      //   .append('div')
+      //   .attr('class', 'mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col ' + quadrant.order)
+      //   .append('table')
+      //   .attr('class', 'mdl-data-table');
+
+      // quadrantTable
+      //   .append('thead')
+      //   .append('tr')
+      //   .append('th')
+      //   .attr('class', 'mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--teal-700')
+      //   .text(quadrant.quadrant.name());
+
+      // quadrantTable
+      //   .append('tbody')
+      //   .attr('id', 'xtr-quadrant-table-' + quadrant.order);
+
+
+      d3.select('#xtr-main-quadrant-tables .mdl-card')
         .append('div')
-        .attr('class', 'mdl-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col ' + quadrant.order)
-        .append('table')
-        .attr('class', 'mdl-data-table');
+        .attr('id', 'xtr-quadrant-list-' + quadrant.order)
+        .attr('class', 'xtr-quadrant-list mdl-list-wrapper selected ' + quadrant.order)
+        .append('ul')
+        .attr('class', 'mdl-list');
 
-      quadrantTable
-        .append('thead')
-        .append('tr')
-        .append('th')
-        .attr('class', 'mdl-data-table__cell--non-numeric mdl-color-text--white mdl-color--teal-700')
-        .text(quadrant.quadrant.name());
-
-      quadrantTable
-        .append('tbody')
-        .attr('id', 'xtr-quadrant-table-' + quadrant.order);
 
       var quadrantRadioItem = d3.select('#quadrants-list').append('li')
-        .attr('class', 'mdl-list__item')
+        .attr('class', 'mdl-list__item ' + quadrant.order)
         .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
         .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order));
 
@@ -469,11 +513,11 @@ const Radar = function (size, radar) {
         .attr('class', 'mdl-list__item-secondary-action')
         .append('label')
         .attr('class', ' mdl-radio mdl-js-radio mdl-js-ripple-effect')
-        .attr('for', quadrant.quadrant.name().toLowerCase())
+        .attr('for', 'quadrant-radio-' + quadrant.order)
         .append('input')
         .attr('type', 'radio')
-        .attr('id', quadrant.quadrant.name().toLowerCase())
-        .attr('class', 'mdl-radio__button')
+        .attr('id', 'quadrant-radio-' + quadrant.order)
+        .attr('class', 'mdl-radio__button quadrant-radio')
         .attr('name', 'quadrant')
         .attr('value', quadrant.quadrant.name().toLowerCase())
         .on('change', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle));
@@ -494,7 +538,7 @@ const Radar = function (size, radar) {
       .attr('class', 'mdl-list__item-primary-content')
       .text('All');
 
-      allQuadrantsRadioItem.append('span')
+    allQuadrantsRadioItem.append('span')
       .attr('class', 'mdl-list__item-secondary-action')
       .append('label')
       .attr('class', ' mdl-radio mdl-js-radio mdl-js-ripple-effect')
@@ -531,14 +575,21 @@ const Radar = function (size, radar) {
   }
 
   function selectQuadrant(order, startAngle) {
+
+    // Old code
     // d3.selectAll('.home-link').classed('selected', false);
     // createHomeLink(d3.select('header'));
 
-    d3.selectAll('.button').classed('selected', false).classed('full-view', false);
-    d3.selectAll('.button.' + order).classed('selected', true);
-    d3.selectAll('.quadrant-table').classed('selected', false);
-    d3.selectAll('.quadrant-table.' + order).classed('selected', true);
-    d3.selectAll('.blip-item-description').classed('expanded', false);
+    // Old code
+    // d3.selectAll('.button').classed('selected', false).classed('full-view', false);
+    // d3.selectAll('.button.' + order).classed('selected', true);
+    // d3.selectAll('.quadrant-table').classed('selected', false);
+    // d3.selectAll('.quadrant-table.' + order).classed('selected', true);
+    // d3.selectAll('.blip-item-description').classed('expanded', false);
+
+    // New code
+    d3.selectAll('.xtr-quadrant-list').classed('selected', false);
+    d3.selectAll('.xtr-quadrant-list.' + order).classed('selected', true);
 
     var scale = 2;
 
@@ -557,8 +608,12 @@ const Radar = function (size, radar) {
     var blipScale = 3 / 4;
     var blipTranslate = (1 - blipScale) / blipScale;
 
+    // Old code
     // svg.style('left', moveLeft + 'px').style('right', moveRight + 'px');
+
+    // New code
     svg.style('left', 0).style('right', 0);
+
     d3.select('.quadrant-group-' + order)
       .transition()
       .duration(1000)
@@ -582,14 +637,17 @@ const Radar = function (size, radar) {
       .attr('transform', 'translate(' + translateXAll + ',' + translateYAll + ')scale(0)');
 
 
-
-    if (d3.select('.legend.legend-' + order).empty()) {
-      drawLegend(order);
-    }
+    // Old code
+    // if (d3.select('.legend.legend-' + order).empty()) {
+    //   drawLegend(order);
+    // }
   }
 
   self.init = function () {
+    // old code
     // radarElement = d3.select('body').append('div').attr('id', 'radar');
+
+    // new code
     radarElement = d3.select('.xtr-main-radar').append('div').attr('id', 'radar');
     return self;
   };

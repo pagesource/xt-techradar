@@ -46,20 +46,6 @@ body{
     }
 }
 
-.mdl-list-wrapper {
-    .mdl-list {
-        margin: 0;
-        &__item {
-            font-size: 14px;
-            white-space: nowrap;
-            >* {
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-    }
-}
-
 .mdl-layout__header>.mdl-layout-icon {
     overflow: visible;
 }
