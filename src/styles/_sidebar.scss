@@ -2,11 +2,28 @@
     &-sidebar {
         width: 100%;
         .mdl-card__title {
-            background-image: linear-gradient(293deg, #1d232a, #282f37);
+            //background-image: linear-gradient(293deg, #1d232a, #282f37);
+            background-color: #1d232a;
+            position: relative;
+            &-text{
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1;
+                letter-spacing: 0;
+            }
         }
         &__title {
             height: 151px;
         }
+    }
+    &-logo {
+        position: absolute;
+        top: 0;
+        left: 12px;
+        background: url('./assets/techradar-01.png') no-repeat center center;
+        background-size: contain;
+        width: 120px;
+        height: 120px;
     }
     &-quadrant-list {
         display: none;
@@ -23,7 +40,6 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-                
                 &.first,
                 &.second,
                 &.third,
@@ -58,17 +74,16 @@
                         background-color: $q4-color;
                     }
                 }
-
-                .mdl-typography--menu.first{
+                .mdl-typography--menu.first {
                     color: $q1-color;
                 }
-                .mdl-typography--menu.second{
+                .mdl-typography--menu.second {
                     color: $q2-color;
                 }
-                .mdl-typography--menu.third{
+                .mdl-typography--menu.third {
                     color: $q3-color;
                 }
-                .mdl-typography--menu.fourth{
+                .mdl-typography--menu.fourth {
                     color: $q4-color;
                 }
             }

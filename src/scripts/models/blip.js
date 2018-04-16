@@ -1,5 +1,5 @@
 const IDEAL_BLIP_WIDTH = 22;
-const Blip = function (name, ring, isNew, topic, description, tags) {
+const Blip = function (name, ring, filename, topic, description, tags) {
   var self, number;
 
   self = {};
@@ -19,8 +19,8 @@ const Blip = function (name, ring, isNew, topic, description, tags) {
     return description || '';
   };
 
-  self.isNew = function () {
-    return isNew;
+  self.filename = function () {
+    return filename;
   };
 
   self.ring = function () {
