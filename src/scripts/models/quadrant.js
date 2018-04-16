@@ -1,5 +1,5 @@
 const Quadrant = function (name) {
-  var self, blips;
+  let self, blips;
 
   self = {};
   blips = [];
@@ -23,4 +23,4 @@ const Quadrant = function (name) {
   return self;
 };
 
-module.exports = Quadrant;
+export default  Quadrant;

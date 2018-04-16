@@ -1,6 +1,6 @@
 const IDEAL_BLIP_WIDTH = 22;
 const Blip = function (name, ring, filename, topic, description, tags) {
-  var self, number;
+  let self, number;
 
   self = {};
   number = -1;
@@ -37,9 +37,9 @@ const Blip = function (name, ring, filename, topic, description, tags) {
 
   self.tags = function() {
     return tags || [];
-  }
+  };
 
   return self;
 };
 
-module.exports = Blip;
+export default Blip;

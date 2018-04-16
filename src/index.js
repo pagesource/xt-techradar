@@ -7,7 +7,7 @@ import plotErrorMessage from './scripts/util/errorPlotter';
 d3.json('/data').then((data) => {
     plotRadar('XT Tech Radar', data);
     d3.select('.xtr-full-page-loader').classed('hidden', true);
-    if (!(typeof (componentHandler) == 'undefined')) {
+    if (!(typeof (componentHandler) === 'undefined')) {
         window.componentHandler.upgradeAllRegistered();
     }
 }).catch((err) => {

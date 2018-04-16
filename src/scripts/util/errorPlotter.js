@@ -1,10 +1,11 @@
-const d3 = require('d3');
-const MalformedDataError = require('../exceptions/malformedDataError');
-const SheetNotFoundError = require('../exceptions/sheetNotFoundError');
-function plotErrorMessage(exception, timeout) {
-    d3.selectAll(".mdl-progress").classed('hidden', true);
+import * as d3 from 'd3';
+import MalformedDataError from '../exceptions/malformedDataError';
+import SheetNotFoundError from '../exceptions/sheetNotFoundError';
 
-    var message = 'Oops! It seems like there are some problems with loading your data. ';
+const plotErrorMessage = function(exception, timeout) {
+    d3.selectAll('.mdl-progress').classed('hidden', true);
+
+    let message = 'Oops! It seems like there are some problems with loading your data. ';
 
     if (exception instanceof MalformedDataError) {
         message = message.concat(exception.message);
@@ -18,6 +19,6 @@ function plotErrorMessage(exception, timeout) {
         message: message,
         timeout: timeout || 3000
     });
-}
+};
 
-module.exports = plotErrorMessage;
+export default plotErrorMessage;

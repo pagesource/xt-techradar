@@ -1,0 +1,24 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "eqeqeq": ["error", "always"],
+    "no-console": "off",
+    "quotes": [2, "single", {"allowTemplateLiterals": true}],
+    "semi": ["error", "always"],
+    "babel/new-cap": 1,
+    "babel/object-curly-spacing": 1,
+    "babel/no-invalid-this": 0,
+    "babel/semi": 1
+  },
+  "plugins": [
+    "babel"
+  ]
+}

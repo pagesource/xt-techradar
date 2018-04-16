@@ -1,22 +1,28 @@
-const MalformedDataError = require('../exceptions/malformedDataError');
-const ExceptionMessages = require('../util/exceptionMessages');
+import MalformedDataError from '../exceptions/malformedDataError';
+import ExceptionMessages from '../util/exceptionMessages';
+import _ from 'lodash';
 
-const _ = {
-  map: require('lodash/map'),
-  uniqBy: require('lodash/uniqBy'),
-  sortBy: require('lodash/sortBy')
-};
-
-const Radar = function() {
-  var self, quadrants, blipNumber, addingQuadrant;
+const Radar = function () {
+  let self, quadrants, blipNumber, addingQuadrant;
 
   blipNumber = 0;
   addingQuadrant = 0;
-  quadrants = [
-    {order: 'first', startAngle: 90},
-    {order: 'second', startAngle: 0},
-    {order: 'third', startAngle: -90},
-    {order: 'fourth', startAngle: -180}
+  quadrants = [{
+      order: 'first',
+      startAngle: 90
+    },
+    {
+      order: 'second',
+      startAngle: 0
+    },
+    {
+      order: 'third',
+      startAngle: -90
+    },
+    {
+      order: 'fourth',
+      startAngle: -180
+    }
   ];
   self = {};
 
@@ -27,7 +33,7 @@ const Radar = function() {
   }
 
   self.addQuadrant = function (quadrant) {
-    if(addingQuadrant >= 4) {
+    if (addingQuadrant >= 4) {
       throw new MalformedDataError(ExceptionMessages.TOO_MANY_QUADRANTS);
     }
     quadrants[addingQuadrant].quadrant = quadrant;
@@ -35,7 +41,7 @@ const Radar = function() {
     addingQuadrant++;
   };
 
-   function allQuadrants() {
+  function allQuadrants() {
     if (addingQuadrant < 4)
       throw new MalformedDataError(ExceptionMessages.LESS_THAN_FOUR_QUADRANTS);
 
@@ -65,4 +71,4 @@ const Radar = function() {
   return self;
 };
 
-module.exports = Radar;
+export default Radar;

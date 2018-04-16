@@ -16,8 +16,8 @@ module.exports = {
         'index': './src/index.js'
     },
     output: {
-        filename: '[chunkhash].bundle.js',
-        chunkFilename: "[chunkhash].bundle.js",
+        filename: '[name].[chunkhash].js',
+        chunkFilename: "[name].[chunkhash].js",
         path: path.resolve(__dirname, 'dist')
     },
     optimization: {
@@ -26,15 +26,19 @@ module.exports = {
         },
         splitChunks: {
             cacheGroups: {
+                commons: {
+                    test: /(d3|d3-tip|dialog-polyfill)/,
+                    name: "vendor-1",
+                    chunks: "initial",
+                },
                 vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: "vendor",
-                    priority: -20,
-                    chunks: "all"
-                }
+                    test: /(markdow-it|lodash|chance)/,
+                    name: "vendor-2",
+                    chunks: "initial",
+                },
             }
         }
-   },
+    },
     externals: {
         jquery: 'jQuery'
     },
@@ -43,10 +47,24 @@ module.exports = {
     },
     module: {
         rules: [{
+            enforce: 'pre',
+            test: /\.js$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: 'eslint-loader',
+        }, {
             test: /(\.css|\.scss)$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: ['css-loader', 'sass-loader']
+                use: ['css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: (loader) => [
+                            require('postcss-cssnext')(),
+                            require('cssnano')()
+                        ]
+                    }
+                }, 'sass-loader']
             })
         }, {
             test: /\.(png|svg|jpg|gif)$/,
@@ -54,16 +72,21 @@ module.exports = {
         }]
     },
     plugins: [
+        new ExtractTextPlugin('[name].[chunkhash].css'),
+        new CopyWebpackPlugin([{
+                from: 'src/docs',
+                to: 'docs'
+            },
+            {
+                from: 'src/assets/favicon.ico'
+            },
+        ]),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
-            title: 'XT | Tech Radar',
-            minify: argv.env === 'prod' ? htmlMinifyOptions : false
+            minify: argv.env === 'prod' ? htmlMinifyOptions : false,
+            buildTime: (new Date()).toDateString()
         }),
-        new ExtractTextPlugin('[chunkhash].bundle.css'),
-        new CopyWebpackPlugin([
-            {from: 'src/docs', to: 'docs'},
-            {from: 'src/assets/favicon.ico'},
-        ])
     ],
-    mode: argv.env === 'prod' ? 'production' : 'development'
+    mode: argv.env === 'prod' ? 'production' : 'development',
+    recordsOutputPath: path.join(__dirname, "dist", "records.json")
 };

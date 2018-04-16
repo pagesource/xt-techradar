@@ -1,7 +1,7 @@
 const RingCalculator = function (numberOfRings, maxRadius) {
-  var sequence = [0, 6, 6, 5, 5, 3, 2, 1];
+  const sequence = [0, 6, 6, 5, 5, 3, 2, 1];
 
-  var self = {};
+  const self = {};
 
   self.sum = function(length) {
     return sequence.slice(0, length + 1).reduce(function (previous, current) {
@@ -10,12 +10,12 @@ const RingCalculator = function (numberOfRings, maxRadius) {
   };
 
   self.getRadius = function(ring) {
-    var total = self.sum(numberOfRings);
-    var sum = self.sum(ring);
+    const total = self.sum(numberOfRings);
+    const sum = self.sum(ring);
     return maxRadius * sum / total;
   };
 
   return self;
 };
 
-module.exports = RingCalculator;
+export default RingCalculator;

@@ -1,5 +1,5 @@
 const Ring = function (name, order) {
-  var self = {};
+  const self = {};
 
   self.name = function () {
     return name;
@@ -12,4 +12,4 @@ const Ring = function (name, order) {
   return self;
 };
 
-module.exports = Ring;
+export default Ring;

@@ -1,33 +1,31 @@
-const d3 = require('d3');
-const _ = require('lodash');
+import * as d3 from 'd3';
+import _ from 'lodash';
+import defaults from './defaults';
+import Radar from '../models/radar';
+import Quadrant from '../models/quadrant';
+import Ring from '../models/ring';
+import Blip from '../models/blip';
+import GraphingRadar from '../graphing/radar';
+import MalformedDataError from '../exceptions/malformedDataError';
+import ExceptionMessages  from './exceptionMessages';
+import plotErrorMessage from './errorPlotter';
 
-const defaults = require('./defaults');
-const Radar = require('../models/radar');
-const Quadrant = require('../models/quadrant');
-const Ring = require('../models/ring');
-const Blip = require('../models/blip');
-const GraphingRadar = require('../graphing/radar');
-const MalformedDataError = require('../exceptions/malformedDataError');
-const ExceptionMessages = require('./exceptionMessages');
-const plotErrorMessage = require('./errorPlotter');
 
 const plotRadar = function (title, blips) {
     document.title = title;
-    d3.selectAll(".mdl-progress").classed('hidden', true);
+    d3.selectAll('.mdl-progress').classed('hidden', true);
 
-    var quadrantNames = defaults.quadrantNames;
-    var ringNames = defaults.ringNames;
+    const quadrantNames = defaults.quadrantNames;
+    const ringNames = defaults.ringNames;
+    const tags = _.union(..._.map(_.uniqBy(blips, defaults.tagsKey), defaults.tagsKey));
 
-    var rings = _.map(_.uniqBy(blips, defaults.ringsKey), defaults.ringsKey);
-    var tags = _.union(..._.map(_.uniqBy(blips, defaults.tagsKey), defaults.tagsKey));
-
-    var ringMap = {};
-    var quadrants = {};
-    var maxRings = 4;
+    let ringMap = {};
+    let quadrants = {};
+    const maxRings = 4;
 
     _.each(ringNames, function (name, i) {
-        if (i == maxRings) {
-            var exception = new MalformedDataError(ExceptionMessages.TOO_MANY_RINGS);
+        if (i === maxRings) {
+            const exception = new MalformedDataError(ExceptionMessages.TOO_MANY_RINGS);
             plotErrorMessage(exception);
             throw exception;
         }
@@ -64,19 +62,19 @@ const plotRadar = function (title, blips) {
     });
 
 
-    var radar = new Radar();
+    const radar = new Radar();
 
     _.each(quadrants, function (quadrant) {
         radar.addQuadrant(quadrant);
     });
 
-    var wrapperWidth = d3.select('.xtr-main-radar').node().getBoundingClientRect().width;
-    var calculateWidth = window.innerHeight > wrapperWidth ? wrapperWidth : window.innerHeight;
+    const wrapperWidth = d3.select('.xtr-main-radar').node().getBoundingClientRect().width;
+    const calculateWidth = window.innerHeight > wrapperWidth ? wrapperWidth : window.innerHeight;
 
     // var size = (window.innerHeight - 133) < 620 ? 620 : window.innerHeight - 133;
-    var size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
+    const size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
 
     new GraphingRadar(size, radar, tags).init().plot();
-}
+};
 
-module.exports = plotRadar;
+export default plotRadar;
