@@ -2,6 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const argv = require('yargs').argv;
 // const webpack = require('webpack');
 
@@ -11,10 +12,31 @@ const htmlMinifyOptions = {
     collapseWhitespace: true
 };
 
+const webpackPlugins =  [
+    new ExtractTextPlugin('[name].[chunkhash].css'),
+    new CopyWebpackPlugin([{
+            from: 'src/docs',
+            to: 'docs'
+        },
+        {
+            from: 'src/assets/favicon.ico'
+        },
+    ]),
+    new HtmlWebpackPlugin({
+        template: 'src/index.html',
+        minify: argv.env === 'prod' ? htmlMinifyOptions : false,
+        buildTime: (new Date()).toDateString()
+    }),
+];
+
+if(argv.env === 'prod') {
+    webpackPlugins.push(new UglifyJsPlugin({
+        extractComments: true
+    }));
+}
+
 module.exports = {
-    entry: {
-        'index': './src/index.js'
-    },
+    entry: ['babel-polyfill', './src/index.js'],
     output: {
         filename: '[name].[chunkhash].js',
         chunkFilename: '[name].[chunkhash].js',
@@ -23,21 +45,7 @@ module.exports = {
     optimization: {
         runtimeChunk: {
             name: 'manifest'
-        },
-        // splitChunks: {
-        //     cacheGroups: {
-        //         commons: {
-        //             test: /(d3|d3-tip|dialog-polyfill)/,
-        //             name: 'vendor-1',
-        //             chunks: 'initial',
-        //         },
-        //         vendor: {
-        //             test: /(markdow-it|lodash|chance)/,
-        //             name: 'vendor-2',
-        //             chunks: 'initial',
-        //         },
-        //     }
-        // }
+        }
     },
     externals: {
         jquery: 'jQuery'
@@ -81,24 +89,16 @@ module.exports = {
         }, {
             test: /\.(png|svg|jpg|gif)$/,
             use: ['file-loader']
+        }, {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env'],
+                plugins: ['@babel/plugin-syntax-dynamic-import']
+            }
         }]
     },
-    plugins: [
-        new ExtractTextPlugin('[name].[chunkhash].css'),
-        new CopyWebpackPlugin([{
-                from: 'src/docs',
-                to: 'docs'
-            },
-            {
-                from: 'src/assets/favicon.ico'
-            },
-        ]),
-        new HtmlWebpackPlugin({
-            template: 'src/index.html',
-            minify: argv.env === 'prod' ? htmlMinifyOptions : false,
-            buildTime: (new Date()).toDateString()
-        }),
-    ],
-    mode: argv.env === 'prod' ? 'production' : 'development',
-    recordsOutputPath: path.join(__dirname, 'dist', 'records.json')
+    plugins: webpackPlugins,
+    mode: argv.env === 'prod' ? 'production' : 'development'
 };

@@ -1,4 +1,5 @@
 import './index.scss';
+import 'isomorphic-fetch';
 import WebFont from 'webfontloader';
 import Lazy from './scripts/lazy';
 import plotRadar from './scripts/util/factory';
