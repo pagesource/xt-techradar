@@ -1,20 +1,20 @@
-const express = require("express");
+const express = require('express');
 const compression = require('compression');
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
 const app = express();
 
-PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.use(compression());
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, 'dist')));
 
-const server = app.listen(PORT, () => {
-    console.log("Server running on port " + PORT);
+app.listen(PORT, () => {
+    console.log('Server running on port ' + PORT);
 });
 
-app.get("/data", (req, res) => {
+app.get('/data', (req, res) => {
     const radarData = JSON.parse(
-            fs.readFileSync(__dirname + "/dist/data/output.json", "utf-8")
+            fs.readFileSync(__dirname + '/dist/data/output.json', 'utf-8')
         ),
         data = radarData;
     setTimeout(() => {

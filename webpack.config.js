@@ -1,9 +1,9 @@
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const argv = require('yargs').argv;
-const webpack = require('webpack');
+// const webpack = require('webpack');
 
 const htmlMinifyOptions = {
     removeComments: true,
@@ -17,33 +17,45 @@ module.exports = {
     },
     output: {
         filename: '[name].[chunkhash].js',
-        chunkFilename: "[name].[chunkhash].js",
+        chunkFilename: '[name].[chunkhash].js',
         path: path.resolve(__dirname, 'dist')
     },
     optimization: {
         runtimeChunk: {
-            name: "manifest"
+            name: 'manifest'
         },
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /(d3|d3-tip|dialog-polyfill)/,
-                    name: "vendor-1",
-                    chunks: "initial",
-                },
-                vendor: {
-                    test: /(markdow-it|lodash|chance)/,
-                    name: "vendor-2",
-                    chunks: "initial",
-                },
-            }
-        }
+        // splitChunks: {
+        //     cacheGroups: {
+        //         commons: {
+        //             test: /(d3|d3-tip|dialog-polyfill)/,
+        //             name: 'vendor-1',
+        //             chunks: 'initial',
+        //         },
+        //         vendor: {
+        //             test: /(markdow-it|lodash|chance)/,
+        //             name: 'vendor-2',
+        //             chunks: 'initial',
+        //         },
+        //     }
+        // }
     },
     externals: {
         jquery: 'jQuery'
     },
     devServer: {
-        contentBase: './dist'
+        port: 9000,
+        contentBase: './dist',
+        // Proxy it via myjson api for development
+        proxy: {
+            '/data': {
+                target: 'https://api.myjson.com',
+                pathRewrite: {
+                    '^/data': '/bins/1gqeib'
+                },
+                secure: false,
+                changeOrigin: true
+            }
+        }
     },
     module: {
         rules: [{
@@ -59,7 +71,7 @@ module.exports = {
                     loader: 'postcss-loader',
                     options: {
                         ident: 'postcss',
-                        plugins: (loader) => [
+                        plugins: () => [
                             require('postcss-cssnext')(),
                             require('cssnano')()
                         ]
@@ -88,5 +100,5 @@ module.exports = {
         }),
     ],
     mode: argv.env === 'prod' ? 'production' : 'development',
-    recordsOutputPath: path.join(__dirname, "dist", "records.json")
+    recordsOutputPath: path.join(__dirname, 'dist', 'records.json')
 };

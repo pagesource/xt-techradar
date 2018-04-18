@@ -1,8 +1,7 @@
-import * as d3 from 'd3';
 import MalformedDataError from '../exceptions/malformedDataError';
 import SheetNotFoundError from '../exceptions/sheetNotFoundError';
 
-const plotErrorMessage = function(exception, timeout) {
+const plotErrorMessage = function(d3, exception, timeout) {
     d3.selectAll('.mdl-progress').classed('hidden', true);
 
     let message = 'Oops! It seems like there are some problems with loading your data. ';

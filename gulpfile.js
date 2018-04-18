@@ -1,5 +1,4 @@
-const gulp = require("gulp");
-const uglify = require("gulp-uglify");
+const gulp = require('gulp');
 const map = require('map-stream');
 const RadarMarkdownParser = require('./utils/parser');
 const gulpSequence = require('gulp-sequence');
