@@ -25,6 +25,10 @@ const webpackPlugins =  [
             from: 'About.md',
             to: 'docs'
         },
+        {
+            from: 'dist/data',
+            to: '../functions/data'
+        },
     ]),
     new HtmlWebpackPlugin({
         template: 'src/index.html',
