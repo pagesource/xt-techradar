@@ -45,6 +45,7 @@ Promise.all([
                     const result = md.render(text);
                     dialog.querySelector('.mdl-dialog__content').innerHTML = result;
                     dialog.showModal();
+                    dialog.querySelector('.mdl-dialog__content').scrollTop = 0;
                 });
             }).catch(function (err) {
                 plotErrorMessage(d3, err);

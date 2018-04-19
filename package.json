@@ -9,7 +9,9 @@
     "serve:dev": "gulp md && webpack-dev-server --open",
     "serve:prod": "gulp md && webpack-dev-server --env prod --open",
     "build:dev": "gulp md && webpack",
-    "build:prod": "gulp md --env prod && webpack --env prod"
+    "build:prod": "gulp md --env prod && webpack --env prod",
+    "webpack:build": "webpack",
+    "gulp:build": "gulp md"
   },
   "keywords": [],
   "author": "",

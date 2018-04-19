@@ -4,6 +4,7 @@ import Lazy from '../lazy';
 
 const MIN_BLIP_WIDTH = 12;
 let chance;
+let scrollToDebounce = null;
 
 const Radar = function (size, radar, tags) {
   return Promise.all([
@@ -275,8 +276,21 @@ const Radar = function (size, radar, tags) {
         tip.hide().style('left', 0).style('top', 0);
       };
 
+
+      const debouncer = function() {
+        if(scrollToDebounce) {
+          clearTimeout(scrollToDebounce);
+        }
+        scrollToDebounce = setTimeout(() => {
+          blipListItem.node().scrollIntoView();
+        }, 600);
+      };
+
       blipListItem.on('mouseover', mouseOver).on('mouseout', mouseOut);
-      group.on('mouseover', mouseOver).on('mouseout', mouseOut);
+      group.on('mouseover', () => {
+        mouseOver();
+        debouncer();
+      }).on('mouseout', mouseOut);
 
       const clickBlip = function () {
         d3.select('#xtr-main-loader').classed('hidden', false);
@@ -474,6 +488,7 @@ const Radar = function (size, radar, tags) {
       const result = md.render(mdData);
       dialog.querySelector('.mdl-dialog__content').innerHTML = result;
       dialog.showModal();
+      dialog.querySelector('.mdl-dialog__content').scrollTop = 0;
     }
 
     function selectQuadrant(order, startAngle) {
