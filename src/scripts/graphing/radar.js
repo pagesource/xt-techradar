@@ -286,7 +286,7 @@ const Radar = function (size, radar, tags) {
           d3.select('#xtr-main-loader').classed('hidden', true);
           createDialog(text);
         }).catch(function (err) {
-          plotErrorMessage(err);
+          plotErrorMessage(d3, err);
         });
       };
 
