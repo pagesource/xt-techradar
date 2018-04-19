@@ -21,6 +21,10 @@ const webpackPlugins =  [
         {
             from: 'src/assets/favicon.ico'
         },
+        {
+            from: 'About.md',
+            to: 'docs'
+        },
     ]),
     new HtmlWebpackPlugin({
         template: 'src/index.html',

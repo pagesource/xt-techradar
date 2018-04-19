@@ -1,4 +1,9 @@
 .xtr {
+    &-info-button{
+        position: absolute;
+        right: 16px;
+        top: 130px;
+    }
     &-sidebar {
         width: 100%;
         .mdl-card__title {

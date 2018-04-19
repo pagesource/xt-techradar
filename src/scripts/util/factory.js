@@ -80,7 +80,6 @@ const plotRadar = function (title, blips) {
         // var size = (window.innerHeight - 133) < 620 ? 620 : window.innerHeight - 133;
         const size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
 
-        console.log(size, radar, tags);
         new GraphingRadar(size, radar, tags).then(instance => {
             instance.init().plot();
             mdl();

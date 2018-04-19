@@ -31,6 +31,25 @@ Promise.all([
     dialog.querySelector('.close').addEventListener('click', function () {
         dialog.close();
     });
+
+    // About page functionality
+    d3.select('#xtr-info-button')
+        .classed('hidden', false)
+        .on('click', () => {
+            d3.select('#xtr-main-loader').classed('hidden', false);
+            d3.text('/docs/About.md').then(function (text) {
+                Lazy.modules.markDownIt().then(MarkDownIt => {
+                    const md = new MarkDownIt();
+                    d3.select('#xtr-main-loader').classed('hidden', true);
+                    dialog.open = false;
+                    const result = md.render(text);
+                    dialog.querySelector('.mdl-dialog__content').innerHTML = result;
+                    dialog.showModal();
+                });
+            }).catch(function (err) {
+                plotErrorMessage(d3, err);
+            });
+        });
 });
 
 // Load Google fonts

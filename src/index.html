@@ -23,7 +23,15 @@
             <div class="xtr-sidebar">
                 <div class="xtr-sidebar__title mdl-card__title mdl-card--expand">
                     <div class="xtr-logo"></div>
-                    <h2 class="mdl-card__title-text mdl-color-text--white">Build: <%= htmlWebpackPlugin.options.buildTime %></h2>
+                    <button id="xtr-info-button" class="xtr-info-button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp hidden">
+                        <i class="material-icons">info_outline</i>
+                    </button>
+                    <div class="mdl-tooltip" for="xtr-info-button">
+                        About
+                    </div>
+                    <h2 class="mdl-card__title-text mdl-color-text--white">Build:
+                        <%= htmlWebpackPlugin.options.buildTime %>
+                    </h2>
                 </div>
                 <div id="xtr-sidebar-loader" style="width:100%" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
                 <form action="">

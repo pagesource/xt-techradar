@@ -15,9 +15,7 @@ const Radar = function (size, radar, tags) {
   ]).then(modules => {
     let d3, d3tip, _, Chance, MarkDownIt;
     [d3, d3tip, _, Chance, MarkDownIt] = modules;
-    console.log(d3, d3tip, _, Chance, MarkDownIt);
-    console.log(size, radar, tags);
-
+  
     const md = new MarkDownIt();
     const dialog = document.querySelector('dialog');
    
