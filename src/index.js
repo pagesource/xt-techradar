@@ -8,15 +8,20 @@ import './scripts/util/onReady';
 
 // Start MDL
 materialDesignLite().then(() => {
+
+    document.querySelectorAll('.xtr-hidden').forEach(el => {
+        el.classList.remove('xtr-hidden');
+    });
+    document.querySelectorAll('.xtr-pre-loading').forEach(el => {
+        el.classList.add('xtr-hidden');
+    });
+
     Promise.all([
         Lazy.modules.d3(),
         Lazy.modules.dialogPolyfill()
     ]).then(modules => {
         let d3, dialogPolyfill;
         [d3, dialogPolyfill] = modules;
-
-        d3.selectAll('.xtr-hidden').classed('xtr-hidden', false);
-        d3.selectAll('.xtr-pre-loading').classed('xtr-hidden', true);
 
         d3.json('/data').then((data) => {
             d3.select('.xtr-full-page-loader').classed('hidden', true);

@@ -14,3 +14,6 @@ In a way, this isn't anything new. Event buses or your typical click events are 
 ## Resources
 [Docs](http://reactivex.io/rxjs/)
 
+## Platform
+web, mobile
+
