@@ -1,4 +1,6 @@
 const hljs = require('highlight.js');
+const escapeStringRegexp = require('escape-string-regexp');
+
 const mdOptions = {
     html: true,
     linkify: true,
@@ -94,7 +96,7 @@ class RadarMarkdownParser {
                 if (keyObj.tags) {
                     this.tempData[keyObj.name] = token.content.split(',').map(item => _.trim(item.toLowerCase()));
                 } else {
-                    this.tempData[keyObj.name] = _.lowerCase(token.content);
+                    this.tempData[keyObj.name] = token.content.toLowerCase();
                 }
             };
 
@@ -113,14 +115,14 @@ class RadarMarkdownParser {
     levelFourSanitizer(value, key) {
         if(key ===  'quadrant') {
             _.each(defaults.quandrants, (item, i) => {
-                if(item.match(new RegExp(`${value}`, 'g'))) {
+                if(item.match(new RegExp(`${escapeStringRegexp(value)}`, 'ig'))) {
                     this.tempData.quadrant = item;
                 }
             });
         }
         if(key === 'type') {
             _.each(defaults.rings, (item, i) => {
-                if(item.match(new RegExp(`${value}`, 'ig'))) {
+                if(item.match(new RegExp(`${escapeStringRegexp(value)}`, 'ig'))) {
                     this.tempData.ring = item;
                 }
             });

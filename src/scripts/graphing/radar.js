@@ -12,14 +12,33 @@ const Radar = function (size, radar, tags) {
     Lazy.modules.d3Tip(),
     Lazy.modules.lodash(),
     Lazy.modules.chance(),
-    Lazy.modules.markDownIt()
+    Lazy.modules.markDownIt(),
+    Lazy.modules.highlightjs()
   ]).then(modules => {
-    let d3, d3tip, _, Chance, MarkDownIt;
-    [d3, d3tip, _, Chance, MarkDownIt] = modules;
-  
-    const md = new MarkDownIt();
+    let d3, d3tip, _, Chance, MarkDownIt, hljs;
+    [d3, d3tip, _, Chance, MarkDownIt, hljs] = modules;
+    const mdOptions = {
+      html: true,
+      linkify: true,
+      breaks: true,
+      typographer: true,
+      highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return '<pre class="hljs"><code>' +
+              hljs.highlight(lang, str, true).value +
+              '</code></pre>';
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+      }
+    };
+    const md = new MarkDownIt(mdOptions);
     const dialog = document.querySelector('dialog');
-   
+
     let svg, radarElement;
 
 
@@ -152,6 +171,17 @@ const Radar = function (size, radar, tags) {
       });
     }
 
+    // function compare(a, b) {
+    //   if (a.number() < b.number()) {
+    //     return -1;
+    //   }
+    //   if (a.number() > b.number()) {
+    //     return 1;
+    //   }
+    //   // a must be equal to b
+    //   return 0;
+    // }
+
     function plotBlips(quadrantGroup, rings, quadrantWrapper) {
       let blips, quadrant, startAngle, order;
 
@@ -167,42 +197,39 @@ const Radar = function (size, radar, tags) {
         .text(quadrant.name());
 
       blips = quadrant.blips();
-      rings.forEach(function (ring, i) {
-        const ringBlips = blips.filter(function (blip) {
-          return blip.ring() === ring;
-        });
 
-        if (ringBlips.length === 0) {
-          return;
-        }
+      let allBlipCoordinatesInRing = [];
+      blips.forEach(function (blip) {
+        rings.forEach(function (ring, i) {
+          if (blip.ring() === ring) {
+            let maxRadius, minRadius;
 
-        let maxRadius, minRadius;
+            minRadius = ringCalculator.getRadius(i);
+            maxRadius = ringCalculator.getRadius(i + 1);
 
-        minRadius = ringCalculator.getRadius(i);
-        maxRadius = ringCalculator.getRadius(i + 1);
+            const sumRing = ring.name().split('').reduce(function (p, c) {
+              return p + c.charCodeAt(0);
+            }, 0);
 
-        const sumRing = ring.name().split('').reduce(function (p, c) {
-          return p + c.charCodeAt(0);
-        }, 0);
-        const sumQuadrant = quadrant.name().split('').reduce(function (p, c) {
-          return p + c.charCodeAt(0);
-        }, 0);
+            const sumQuadrant = quadrant.name().split('').reduce(function (p, c) {
+              return p + c.charCodeAt(0);
+            }, 0);
 
-        chance = new Chance(Math.PI * sumRing * ring.name().length * sumQuadrant * quadrant.name().length);
+            chance = new Chance(Math.PI * sumRing * ring.name().length * sumQuadrant * quadrant.name().length);
 
-        // New code
-        const ringList = d3.select('#xtr-quadrant-list-' + order + ' .mdl-list');
-        let allBlipCoordinatesInRing = [];
+            // New code
+            const ringList = d3.select('#xtr-quadrant-list-' + order + ' .mdl-list');
+            
+            const coordinates = findBlipCoordinates(blip,
+              minRadius,
+              maxRadius,
+              startAngle,
+              allBlipCoordinatesInRing);
 
-        ringBlips.forEach(function (blip) {
-          const coordinates = findBlipCoordinates(blip,
-            minRadius,
-            maxRadius,
-            startAngle,
-            allBlipCoordinatesInRing);
+            allBlipCoordinatesInRing.push(coordinates);
+            drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList);
 
-          allBlipCoordinatesInRing.push(coordinates);
-          drawBlipInCoordinates(blip, coordinates, order, quadrantGroup, ringList);
+          }
         });
       });
     }
@@ -277,8 +304,8 @@ const Radar = function (size, radar, tags) {
       };
 
 
-      const debouncer = function() {
-        if(scrollToDebounce) {
+      const debouncer = function () {
+        if (scrollToDebounce) {
           clearTimeout(scrollToDebounce);
         }
         scrollToDebounce = setTimeout(() => {

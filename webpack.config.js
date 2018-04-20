@@ -12,7 +12,7 @@ const htmlMinifyOptions = {
     collapseWhitespace: true
 };
 
-const webpackPlugins =  [
+const webpackPlugins = [
     new ExtractTextPlugin('[name].[chunkhash].css'),
     new CopyWebpackPlugin([{
             from: 'src/docs',
@@ -33,11 +33,12 @@ const webpackPlugins =  [
     new HtmlWebpackPlugin({
         template: 'src/index.html',
         minify: argv.env === 'prod' ? htmlMinifyOptions : false,
-        buildTime: (new Date()).toDateString()
-    }),
+        buildTime: (new Date()).toDateString(),
+        inject: false
+    })
 ];
 
-if(argv.env === 'prod') {
+if (argv.env === 'prod') {
     webpackPlugins.push(new UglifyJsPlugin({
         extractComments: true
     }));
@@ -50,11 +51,7 @@ module.exports = {
         chunkFilename: '[name].[chunkhash].js',
         path: path.resolve(__dirname, 'dist')
     },
-    optimization: {
-        runtimeChunk: {
-            name: 'manifest'
-        }
-    },
+    optimization: {},
     externals: {
         jquery: 'jQuery'
     },
@@ -83,13 +80,24 @@ module.exports = {
             test: /(\.css|\.scss)$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: ['css-loader', {
+                use: [{
+                    loader: 'css-loader',
+                    options: {
+                        minify: argv.env === 'prod'
+                    }
+                }, {
                     loader: 'postcss-loader',
                     options: {
                         ident: 'postcss',
                         plugins: () => [
                             require('postcss-cssnext')(),
-                            require('cssnano')()
+                            require('cssnano')({
+                                preset: ['default', {
+                                    discardComments: {
+                                        removeAll: true,
+                                    },
+                                }]
+                            })
                         ]
                     }
                 }, 'sass-loader']

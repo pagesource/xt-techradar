@@ -7,11 +7,11 @@ import MalformedDataError from '../exceptions/malformedDataError';
 import ExceptionMessages from './exceptionMessages';
 import plotErrorMessage from './errorPlotter';
 import GraphingRadar from '../graphing/radar';
-import mdl from './mdl';
+import materialDesignLite from './materialDesignLite';
 import Lazy from '../lazy';
 
 const plotRadar = function (title, blips) {
-    Promise.all([
+    return Promise.all([
         Lazy.modules.d3(),
         Lazy.modules.lodash()
     ]).then(modules => {
@@ -19,8 +19,6 @@ const plotRadar = function (title, blips) {
         [d3, _] = modules;
 
         document.title = title;
-        d3.selectAll('.mdl-progress').classed('hidden', true);
-
         const quadrantNames = defaults.quadrantNames;
         const ringNames = defaults.ringNames;
         const tags = _.union(..._.map(_.uniqBy(blips, defaults.tagsKey), defaults.tagsKey));
@@ -80,9 +78,9 @@ const plotRadar = function (title, blips) {
         // var size = (window.innerHeight - 133) < 620 ? 620 : window.innerHeight - 133;
         const size = (calculateWidth - 133) < 550 ? 550 : calculateWidth - 133;
 
-        new GraphingRadar(size, radar, tags).then(instance => {
+        return new GraphingRadar(size, radar, tags).then(instance => {
             instance.init().plot();
-            mdl();
+            materialDesignLite();
         });
     });
 };

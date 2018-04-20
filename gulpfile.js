@@ -2,6 +2,8 @@ const gulp = require('gulp');
 const map = require('map-stream');
 const RadarMarkdownParser = require('./utils/parser');
 const gulpSequence = require('gulp-sequence');
+const cleanCSS = require('gulp-clean-css');
+const inline = require('gulp-inline');
 const path = require('path');
 const del = require('del');
 const Vinyl = require('vinyl');
@@ -24,7 +26,7 @@ function string_src(filename, string) {
     return src;
 }
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
     return del(['dist']);
 });
 
@@ -39,7 +41,17 @@ gulp.task('build', function () {
 
 gulp.task('write', function () {
     return string_src('output.json', JSON.stringify(data, null, 2))
-    .pipe(gulp.dest('dist/data'));
+        .pipe(gulp.dest('dist/data'));
+});
+
+
+gulp.task('minify-css', () => {
+    return gulp.src('dist/index.html')
+        .pipe(inline({
+            css: [cleanCSS],
+            disabledTypes: ['js', 'img', 'svg']
+        }))
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('md', gulpSequence('clean', 'build', 'write'));

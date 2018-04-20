@@ -5,7 +5,9 @@ const _modules = {
     markDownIt: () => import ('markdown-it').then(obj => obj.default),
     lodash: () => import('lodash').then(obj => obj.default),
     dialogPolyfill: () => import('dialog-polyfill').then(obj => obj.default),
-    mdl: () => import('material-design-lite')
+    mdl: () => import('material-design-lite'),
+    webfontLoader: () => import('webfontloader').then(obj => obj.default),
+    highlightjs: () => import('highlight.js').then(obj => obj.default),
 };
 
 export default class Lazy {

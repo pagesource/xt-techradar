@@ -1,30 +1,20 @@
 # jQuery
 
 ## Quadrant
-grow
+ubiquitous
 
 ## Type
 concepts
 
 ## Description
-Mollit laboris minim ad ipsum velit occaecat. Pariatur officia consequat non minim non officia aliqua nostrud sint. Sunt elit cillum velit eiusmod voluptate deserunt nisi irure qui.
-
-Nisi magna do ea proident. Ad anim culpa officia culpa. Duis nostrud proident ullamco ad est reprehenderit culpa. Do enim amet ullamco ipsum occaecat aliquip ipsum sit anim. Sit officia adipisicing id adipisicing fugiat.
+jQuery is a lightweight, "write less, do more", JavaScript library.The purpose of jQuery is to make it much easier to use JavaScript on your website.jQuery takes a lot of common tasks that require many lines of JavaScript code to accomplish, and wraps them into methods that you can call with a single line of code.jQuery also simplifies a lot of the complicated things from JavaScript, like AJAX calls and DOM manipulation.
 
 ## Resources
-https://www.google.co.in
-https://www.google.co.in
-
-``` js
-var foo = function (bar) {
-  return bar++;
-};
-
-console.log(foo(5));
-```
+[Offcial Site](https://jquery.com/)
+[NPM](https://www.npmjs.com/package/jquery)
 
 ## Github
-https://www.google.co.in
+* https://github.com/jquery/jquery
 
 ### Platform
-web, mobile, ar/vr
+web

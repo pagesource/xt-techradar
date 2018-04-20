@@ -4,27 +4,31 @@
 ubiquitous
 
 ## Type
-Tools
+frameworks
 
 ## Description
-Mollit laboris minim ad ipsum velit occaecat. Pariatur officia consequat non minim non officia aliqua nostrud sint. Sunt elit cillum velit eiusmod voluptate deserunt nisi irure qui.
-
-Nisi magna do ea proident. Ad anim culpa officia culpa. Duis nostrud proident ullamco ad est reprehenderit culpa. Do enim amet ullamco ipsum occaecat aliquip ipsum sit anim. Sit officia adipisicing id adipisicing fugiat.
-
-## Resources
-https://www.google.co.in
-https://www.google.co.in
+A JavaScript library for building user interfaces
 
 ``` js
-var foo = function (bar) {
-  return bar++;
-};
+import React from 'react';
+import ReactDOM from 'react-dom'
 
-console.log(foo(5));
+export default class App extends React.Component {
+  render() {
+    return (
+      <div>Hello React!</div>
+    );
+  }
+}
+
+ReactDOM.render(<App/>,document.getElementById('root'))
 ```
+## Resources
+[React](https://reactjs.org/)
+
 
 ## Github
-https://www.google.co.in
+* https://github.com/facebook/react/
 
 ### Platform
-web, mobile, ar/vr
+Web,Mobile

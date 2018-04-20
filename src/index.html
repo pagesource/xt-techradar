@@ -7,10 +7,32 @@
     <title>XT Tech Radar Loading...</title>
     <link rel='shortcut icon' href='/favicon.ico' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html,body{
+            background-color: #f5f5f5;
+        }
+        .xtr-pre-loading{
+            position: absolute;
+            top:0;
+            right: 0;
+            left:0;
+            bottom: 0;
+            height: 50px;
+            margin: auto;
+            line-height: 50px;
+            text-align: center;
+            font-family:'Courier New', Courier, monospace;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .xtr-hidden{
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body class="mdl-color--grey-100">
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <div class="xtr-pre-loading">XT Tech Radar Loading...</div>
+    <div class="xtr-hidden mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <header class="xtr-header mdl-layout__header mdl-layout--small-screen-only">
             <div class="mdl-layout-icon"></div>
             <div class="mdl-layout__header-row">
@@ -64,7 +86,7 @@
             </div>
         </div>
     </div>
-    <dialog class="mdl-dialog">
+    <dialog class="xtr-hidden mdl-dialog">
         <div class="mdl-dialog-inner">
             <div class="mdl-dialog__content markdown-body"></div>
             <div class="mdl-dialog__actions">
@@ -72,14 +94,22 @@
             </div>
         </div>
     </dialog>
-    <div id="xtr-error-toast" class="mdl-js-snackbar mdl-snackbar">
+    <div id="xtr-error-toast" class="xtr-hidden mdl-js-snackbar mdl-snackbar">
         <div class="mdl-snackbar__text"></div>
         <button class="mdl-snackbar__action" type="button"></button>
     </div>
-    <div class="xtr-full-page-loader">
+    <div class="xtr-hidden xtr-full-page-loader">
         <div class="xtr-full-page-loader__logo"></div>
         <div class="mdl-spinner mdl-js-spinner is-active"></div>
     </div>
+
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+        <script async src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %>
+
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+        <link rel="stylesheet" property="stylesheet" href="<%= htmlWebpackPlugin.files.css[css] %>">
+    <% } %>
 </body>
 
 </html>
