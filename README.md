@@ -43,7 +43,7 @@ In order for you to contrubute to the radar you would need to do the following:
 2. Next clone the forked repository locally to have a local copy of it.
 3. `cd` into the folder containing the local copy. 
 4. Run `npm install`.
-5. Run `npm run serve:dev`. This will automatically run the `gulp` and `webpack` buils and start a local dev server on port `:9000` i.e `http://localhost:9000`.
+5. Run `npm run build:dev && node server.js`. This will automatically run the `gulp` and `webpack` buils and start a local dev server on port `:3000` i.e `http://localhost:3000`.
 
 
 
