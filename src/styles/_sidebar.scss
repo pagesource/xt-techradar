@@ -134,6 +134,12 @@
                 background-color: $q4-color;
             }
         }
+
+        label{
+            &.mdl-list__item-primary-content{
+                cursor: pointer;
+            }
+        }
     }
 }
 .xtr-list__data-item{

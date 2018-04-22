@@ -36,8 +36,28 @@ const Radar = function (size, radar, tags) {
         return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
       }
     };
+
+
     const md = new MarkDownIt(mdOptions);
     const dialog = document.querySelector('dialog');
+
+    // Remember old renderer, if overriden, or proxy to default renderer
+    const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+
+    md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+      // If you are sure other plugins can't add `target` - drop check below
+      var aIndex = tokens[idx].attrIndex('target');
+
+      if (aIndex < 0) {
+        tokens[idx].attrPush(['target', '_blank']); // add new attribute
+      } else {
+        tokens[idx].attrs[aIndex][1] = '_blank'; // replace value of existing attr
+      }
+      // pass token to default renderer.
+      return defaultRender(tokens, idx, options, env, self);
+    };
 
     let svg, radarElement;
 
@@ -219,7 +239,7 @@ const Radar = function (size, radar, tags) {
 
             // New code
             const ringList = d3.select('#xtr-quadrant-list-' + order + ' .mdl-list');
-            
+
             const coordinates = findBlipCoordinates(blip,
               minRadius,
               maxRadius,
@@ -372,11 +392,13 @@ const Radar = function (size, radar, tags) {
           .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
           .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order));
 
-        quadrantRadioItem.append('span')
+        quadrantRadioItem
+          .append('label')
           .attr('class', 'mdl-list__item-primary-content mdl-typography--text-capitalize')
+          .attr('for', 'quadrant-radio-' + quadrant.order)
           .text(quadrant.quadrant.name());
 
-        quadrantRadioItem.append('span')
+        quadrantRadioItem.append('div')
           .attr('class', 'mdl-list__item-secondary-action')
           .append('label')
           .attr('class', ' mdl-radio mdl-js-radio mdl-js-ripple-effect')
@@ -401,11 +423,13 @@ const Radar = function (size, radar, tags) {
       const allQuadrantsRadioItem = d3.select('#quadrants-list').append('li')
         .attr('class', 'mdl-list__item');
 
-      allQuadrantsRadioItem.append('span')
+      allQuadrantsRadioItem
+        .append('label')
         .attr('class', 'mdl-list__item-primary-content mdl-typography--text-capitalize')
+        .attr('for', 'all')
         .text('All');
 
-      allQuadrantsRadioItem.append('span')
+      allQuadrantsRadioItem.append('div')
         .attr('class', 'mdl-list__item-secondary-action')
         .append('label')
         .attr('class', ' mdl-radio mdl-js-radio mdl-js-ripple-effect')

@@ -45,7 +45,7 @@ materialDesignLite().then(() => {
             .classed('hidden', false)
             .on('click', () => {
                 d3.select('#xtr-main-loader').classed('hidden', false);
-                d3.text('/docs/About.md').then(function (text) {
+                d3.text('/docs/ABOUT.md').then(function (text) {
                     Lazy.modules.markDownIt().then(MarkDownIt => {
                         const md = new MarkDownIt();
                         d3.select('#xtr-main-loader').classed('hidden', true);
