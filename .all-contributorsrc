@@ -1,0 +1,154 @@
+{
+  "projectName": "xtr",
+  "projectOwner": "Nisheed Jagadish",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "nisheed2440",
+      "name": "Nisheed Jagadish",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3470465?v=4",
+      "profile": "https://github.com/nisheed2440",
+      "contributions": [
+        "code",
+        "design",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "areai51",
+      "name": "Vinci Rufus",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/357862?v=4",
+      "profile": "https://github.com/areai51",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "infra"
+      ]
+    },
+    {
+      "login": "kritiaggarwal",
+      "name": "Kriti Aggarwal",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7406582?v=4",
+      "profile": "https://github.com/kritiaggarwal",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Ashishdce",
+      "name": "Ashish Jangid",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11964636?v=4",
+      "profile": "https://github.com/Ashishdce",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Rsreelakshmi",
+      "name": "Sree",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/31694005?v=4",
+      "profile": "https://github.com/Rsreelakshmi",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "saurabhkinariwala",
+      "name": "Saurabh kinariwala",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/30474228?v=4",
+      "profile": "https://github.com/saurabhkinariwala",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "subhendukundu",
+      "name": "subhendukundu",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20059141?v=4",
+      "profile": "https://github.com/subhendukundu",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ans990",
+      "name": "Anshul",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/26963057?v=4",
+      "profile": "https://github.com/ans990",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "michaelpackiyaraj",
+      "name": "Michael",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7973694?v=4",
+      "profile": "https://github.com/michaelpackiyaraj",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Yuvaranei",
+      "name": "Yuvaranei Perumal",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/25721359?v=4",
+      "profile": "https://github.com/Yuvaranei",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "naveenkumarpg",
+      "name": "Naveen Setty",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5549558?v=4",
+      "profile": "http://naveenkumarpg.github.io/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "sirius93",
+      "name": "Nandan Kumar",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6882879?v=4",
+      "profile": "https://github.com/sirius93",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "kumarranjansingh",
+      "name": "Ranjan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12463387?v=4",
+      "profile": "https://github.com/kumarranjansingh",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Gigacore",
+      "name": "Santhosh Sundar",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/278541?v=4",
+      "profile": "https://gigacore.in/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "aniruddh047",
+      "name": "Aniruddh K.",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/25810438?v=4",
+      "profile": "https://github.com/aniruddh047",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
+}

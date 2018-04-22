@@ -11,7 +11,9 @@
     "build:dev": "gulp md && webpack",
     "build:prod": "gulp md --env prod && webpack --env prod",
     "webpack:build": "webpack",
-    "gulp:build": "gulp md"
+    "gulp:build": "gulp md",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +42,7 @@
     "@babel/core": "^7.0.0-beta.44",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.44",
     "@babel/preset-env": "^7.0.0-beta.44",
+    "all-contributors-cli": "^4.11.1",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^8.0.0-beta.2",
