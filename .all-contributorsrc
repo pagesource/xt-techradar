@@ -4,12 +4,12 @@
   "files": [
     "README.md"
   ],
-  "commit": false,
+  "commit": true,
   "contributorsPerLine": 6,
   "imageSize": 100,
-  "commit": true,
   "contributorTemplate": "<a href=\"<%= contributor.profile %>\"><img src=\"<%= contributor.avatar_url %>\" width=\"<%= options.imageSize %>px;\"/><br /><sub><b><%= contributor.name %></b></sub></a>",
-  "contributors": [{
+  "contributors": [
+    {
       "login": "nisheed2440",
       "name": "Nisheed Jagadish",
       "avatar_url": "https://avatars3.githubusercontent.com/u/3470465?v=4",
@@ -149,6 +149,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sauryabhatt",
+      "name": "sauryabhatt",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11456238?v=4",
+      "profile": "https://github.com/sauryabhatt",
+      "contributions": [
+        "doc"
+      ]
     }
-  ]
+  ],
+  "repoType": "github"
 }
