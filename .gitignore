@@ -66,3 +66,6 @@ build
 data/output.json
 functions/data/
 functions/node_modules/
+
+# Firebase
+.firebase

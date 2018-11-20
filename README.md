@@ -1,5 +1,7 @@
 ![XTR LOGO](/src/assets/xtr_logo_black.png "XT Tech Radar")
 
+![XTR Screenshot](/src/assets/xtr_screenshot.PNG "XT Tech Radar Screenshot")
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors)
 
 # XT Tech Radar
