@@ -82,9 +82,6 @@ module.exports = {
                 fallback: 'style-loader',
                 use: [{
                     loader: 'css-loader',
-                    options: {
-                        minify: argv.env === 'prod'
-                    }
                 }, {
                     loader: 'postcss-loader',
                     options: {

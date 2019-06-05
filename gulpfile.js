@@ -1,7 +1,6 @@
-const gulp = require('gulp');
+const { src , dest, series} = require('gulp');
 const map = require('map-stream');
 const RadarMarkdownParser = require('./utils/parser');
-const gulpSequence = require('gulp-sequence');
 const cleanCSS = require('gulp-clean-css');
 const inline = require('gulp-inline');
 const path = require('path');
@@ -26,32 +25,43 @@ function string_src(filename, string) {
     return src;
 }
 
-gulp.task('clean', function () {
-    return del(['dist']);
-});
 
-gulp.task('build', function () {
-    return gulp.src(['./src/docs/*.md'])
+// Updated gulp API functions
+
+// Clean dist folder
+function clean () {
+    return del(['dist']);
+}
+exports.clean = clean;
+
+// Build docs
+function build () {
+    return src(['./src/docs/*.md'])
         .pipe(map(function (file, done) {
             data.push(new RadarMarkdownParser(file.contents.toString('utf8'), path.basename(file.path)));
             done();
         }))
-        .pipe(gulp.dest('./dist/temp'));
-});
+        .pipe(dest('./dist/temp'));
+}
 
-gulp.task('write', function () {
+exports.build = build;
+// Wrire output
+function write() {
     return string_src('output.json', JSON.stringify(data, null, 2))
-        .pipe(gulp.dest('dist/data'));
-});
+        .pipe(dest('dist/data'));
+}
+exports.write = write;
 
-
-gulp.task('minify-css', () => {
-    return gulp.src('dist/index.html')
+// Minify CSS
+function minifyCss(){
+    return src('dist/index.html')
         .pipe(inline({
             css: [cleanCSS],
             disabledTypes: ['js', 'img', 'svg']
         }))
-        .pipe(gulp.dest('dist/'));
-});
+        .pipe(dest('dist/'));
+}
+exports.minifyCss = minifyCss;
 
-gulp.task('md', gulpSequence('clean', 'build', 'write'));
+// Build output
+exports.md = series(clean, build, write);
