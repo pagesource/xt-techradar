@@ -23,7 +23,7 @@ materialDesignLite().then(() => {
         let d3, dialogPolyfill;
         [d3, dialogPolyfill] = modules;
 
-        d3.json('/data').then((data) => {
+        d3.json('/data/output.json').then((data) => {
             d3.select('.xtr-full-page-loader').classed('hidden', true);
             plotRadar('XT Tech Radar', data).then(() => {
                 d3.selectAll('.mdl-progress').classed('hidden', true);

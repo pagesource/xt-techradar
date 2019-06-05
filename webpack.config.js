@@ -60,10 +60,10 @@ module.exports = {
         contentBase: './dist',
         // Proxy it via myjson api for development
         proxy: {
-            '/data': {
+            '/data/output.json': {
                 target: 'https://api.myjson.com',
                 pathRewrite: {
-                    '^/data': '/bins/1gqeib'
+                    '^/data/output.json': '/bins/1gqeib'
                 },
                 secure: false,
                 changeOrigin: true
