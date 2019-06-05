@@ -46,6 +46,7 @@
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^8.0.0-beta.2",
+    "buffer-from": "^1.1.1",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^2.1.1",
     "cssnano": "^4.1.10",

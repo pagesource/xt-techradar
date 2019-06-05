@@ -22,7 +22,7 @@ const webpackPlugins = [
             from: 'src/assets/favicon.ico'
         },
         {
-            from: 'ABOUT.md',
+            from: 'About.md',
             to: 'docs'
         },
         {

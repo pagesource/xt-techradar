@@ -1,4 +1,5 @@
-const { src , dest, series} = require('gulp');
+const {src , dest, series} = require('gulp');
+const bufferFrom = require('buffer-from');
 const map = require('map-stream');
 const RadarMarkdownParser = require('./utils/parser');
 const cleanCSS = require('gulp-clean-css');
@@ -18,7 +19,7 @@ function string_src(filename, string) {
             cwd: process.cwd(),
             base: './',
             path: filename,
-            contents: new Buffer(string)
+            contents: bufferFrom(string)
         }));
         this.push(null);
     };
